@@ -44,7 +44,7 @@ export function NotificationsMenu() {
         onClick={() => setOpen((o) => !o)}
         aria-label="Notifications"
         aria-expanded={open}
-        className={`hidden h-9 w-9 items-center justify-center rounded-full transition-colors sm:flex ${
+        className={`hidden h-11 w-11 items-center justify-center rounded-full transition-colors sm:flex ${
           open ? 'bg-accent-soft text-primary' : 'bg-surface-sunken text-ink-muted hover:bg-accent-soft hover:text-primary'
         }`}
       >

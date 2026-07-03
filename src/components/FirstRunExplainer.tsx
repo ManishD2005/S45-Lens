@@ -4,7 +4,7 @@ import { IconCheckCircle } from './icons'
 
 function MiniFactCard() {
   return (
-    <div className="rounded-[10px] border border-line bg-surface px-3.5 py-2.5 text-left">
+    <div className="rounded-md border border-line bg-surface px-3.5 py-2.5 text-left">
       <p className="label-caps text-ink-faint">From the DRHP</p>
       <p className="mt-1 text-xs text-ink">Revenue +45% YoY</p>
     </div>
@@ -13,7 +13,7 @@ function MiniFactCard() {
 
 function MiniReadCard() {
   return (
-    <div className="rounded-[10px] border border-dashed border-accent/60 bg-surface px-3.5 py-2.5 text-left">
+    <div className="rounded-md border border-dashed border-accent/60 bg-surface px-3.5 py-2.5 text-left">
       <p className="label-caps text-primary">S45's read</p>
       <p className="mt-1 text-xs text-ink">Genuinely strong</p>
     </div>
@@ -35,8 +35,8 @@ const STEPS: { title: string; body: string; visual: ReactNode }[] = [
     title: 'Every fact is sourced',
     body: 'No blanket disclaimers. Each claim is tagged with where it came from — DRHP, MCA filing, SEBI order — and how many sources verified it.',
     visual: (
-      <div className="flex items-start gap-3 rounded-[10px] border border-line bg-surface px-3.5 py-2.5 text-left">
-        <IconCheckCircle width={16} height={16} className="mt-0.5 shrink-0 text-accent" />
+      <div className="flex items-start gap-3 rounded-md border border-line bg-surface px-3.5 py-2.5 text-left">
+        <IconCheckCircle width={16} height={16} className="mt-0.5 shrink-0 text-primary" />
         <div>
           <p className="text-xs text-ink">Revenue up 45%, profit up 94% year on year</p>
           <p className="label-caps mt-1 text-ink-faint normal-case tracking-normal">verified against DRHP + MCA filing</p>
@@ -49,9 +49,9 @@ const STEPS: { title: string; body: string; visual: ReactNode }[] = [
     body: "Every IPO page has a chat scoped only to that company's verified data. It won't tell you whether to invest — it'll show you what the filing says, with a source.",
     visual: (
       <div className="space-y-1.5 text-left">
-        <div className="ml-auto w-fit rounded-[10px] bg-primary px-3 py-2 text-xs text-white">Why is chicken 55% of revenue risky?</div>
-        <div className="w-fit rounded-[10px] border border-line bg-surface px-3 py-2 text-xs text-ink">Concentration risk — one product line carries most of the business.</div>
-        <p className="label-caps text-accent normal-case tracking-normal">source: DRHP p.42</p>
+        <div className="ml-auto w-fit rounded-md bg-primary px-3 py-2 text-xs text-white">Why is chicken 55% of revenue risky?</div>
+        <div className="w-fit rounded-md border border-line bg-surface px-3 py-2 text-xs text-ink">Concentration risk — one product line carries most of the business.</div>
+        <p className="label-caps text-primary normal-case tracking-normal">source: DRHP p.42</p>
       </div>
     ),
   },

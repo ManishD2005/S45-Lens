@@ -6,7 +6,14 @@ const INTRO_SEEN_KEY = 's45lens.introSeen'
 const SAVED_KEY = 's45lens.savedIpos'
 const RECENT_SEARCH_KEY = 's45lens.recentSearches'
 const PROFILE_KEY = 's45lens.profile'
+const VIEW_LOG_KEY = 's45lens.ipoViews'
 const MAX_RECENT_SEARCHES = 5
+const MAX_VIEW_LOG = 500
+
+export interface IpoViewEntry {
+  slug: string
+  at: number
+}
 
 function readBool(key: string): boolean {
   return localStorage.getItem(key) === '1'
@@ -30,6 +37,15 @@ function readProfile(): UserProfile | null {
   }
 }
 
+function readViewLog(): IpoViewEntry[] {
+  try {
+    const raw = localStorage.getItem(VIEW_LOG_KEY)
+    return raw ? (JSON.parse(raw) as IpoViewEntry[]) : []
+  } catch {
+    return []
+  }
+}
+
 interface AppStateValue {
   loggedIn: boolean
   profile: UserProfile | null
@@ -44,6 +60,8 @@ interface AppStateValue {
   recentSearches: string[]
   addRecentSearch: (term: string) => void
   clearRecentSearches: () => void
+  ipoViews: IpoViewEntry[]
+  recordIpoView: (slug: string) => void
 }
 
 const AppStateContext = createContext<AppStateValue | null>(null)
@@ -54,6 +72,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [introSeen, setIntroSeen] = useState(() => readBool(INTRO_SEEN_KEY))
   const [savedSlugs, setSavedSlugs] = useState<string[]>(() => readList(SAVED_KEY))
   const [recentSearches, setRecentSearches] = useState<string[]>(() => readList(RECENT_SEARCH_KEY))
+  const [ipoViews, setIpoViews] = useState<IpoViewEntry[]>(() => readViewLog())
 
   useEffect(() => {
     localStorage.setItem(LOGGED_IN_KEY, loggedIn ? '1' : '0')
@@ -75,6 +94,10 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(RECENT_SEARCH_KEY, JSON.stringify(recentSearches))
   }, [recentSearches])
+
+  useEffect(() => {
+    localStorage.setItem(VIEW_LOG_KEY, JSON.stringify(ipoViews))
+  }, [ipoViews])
 
   const value: AppStateValue = {
     loggedIn,
@@ -98,6 +121,9 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     addRecentSearch: (term) =>
       setRecentSearches((prev) => [term, ...prev.filter((t) => t.toLowerCase() !== term.toLowerCase())].slice(0, MAX_RECENT_SEARCHES)),
     clearRecentSearches: () => setRecentSearches([]),
+    ipoViews,
+    recordIpoView: (slug) =>
+      setIpoViews((prev) => [...prev, { slug, at: Date.now() }].slice(-MAX_VIEW_LOG)),
   }
 
   return <AppStateContext.Provider value={value}>{children}</AppStateContext.Provider>

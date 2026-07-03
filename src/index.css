@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Test Martina Plantijn";
+  src: url("/fonts/TestMartinaPlantijn-Regular-BF663c36d1ec6d5.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Test Martina Plantijn";
+  src: url("/fonts/TestMartinaPlantijn-Medium-BF663c36d1e5bed.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: "Geist", "Geist Fallback", system-ui, sans-serif;
   --font-serif: "Test Martina Plantijn", "Source Serif 4", "Georgia", serif;
@@ -11,7 +27,7 @@
 
   --color-ink: #14171a;
   --color-ink-muted: #61686f;
-  --color-ink-faint: #9aa1a8;
+  --color-ink-faint: #6b7178;
 
   --color-surface: #ffffff;
   --color-surface-sunken: #f7f7f5;
@@ -24,7 +40,7 @@
   --color-success: #1cbdb1;
   --color-success-soft: #e6f6f5;
 
-  --radius-card: 16px;
+  --radius-card: 6px;
   --radius-pill: 999px;
 }
 
@@ -200,7 +216,6 @@ body {
   letter-spacing: 0.08em;
   font-size: 0.6875rem;
   font-weight: 600;
-  color: var(--color-ink-muted);
 }
 
 .scrollbar-thin::-webkit-scrollbar {

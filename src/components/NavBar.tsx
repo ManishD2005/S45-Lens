@@ -50,7 +50,7 @@ export function NavBar() {
             to="/profile"
             aria-label="Profile — saved IPOs, application history, and settings"
             aria-current={onProfile ? 'page' : undefined}
-            className={`hidden h-9 w-9 items-center justify-center rounded-full transition-colors sm:flex ${
+            className={`hidden h-11 w-11 items-center justify-center rounded-full transition-colors sm:flex ${
               onProfile ? 'bg-accent-soft text-primary' : 'bg-surface-sunken text-ink-muted hover:bg-accent-soft hover:text-primary'
             }`}
           >

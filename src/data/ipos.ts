@@ -247,8 +247,10 @@ export const ipoSummaries: IpoSummary[] = [
     name: 'Trident Papers Ltd',
     category: 'Mainboard',
     oneLiner: 'Industrial packaging paper manufacturing',
-    status: 'closed',
+    status: 'high-confidence',
     isOpen: false,
+    listedPrice: 389,
+    listedChangePercent: 12.7,
   },
 ]
 

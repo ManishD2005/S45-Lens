@@ -90,7 +90,7 @@ export function Login() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Anjali Rao"
-                    className="mb-5 w-full rounded-[10px] border border-line bg-surface-sunken px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
+                    className="mb-5 w-full rounded-md border border-line bg-surface-sunken px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
                   />
 
                   <label className="label-caps mb-2 block text-ink-muted" htmlFor="email">
@@ -103,7 +103,7 @@ export function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="anjali@example.com"
-                    className="mb-5 w-full rounded-[10px] border border-line bg-surface-sunken px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
+                    className="mb-5 w-full rounded-md border border-line bg-surface-sunken px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
                   />
                 </>
               )}
@@ -120,7 +120,7 @@ export function Login() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="98765 43210"
-                className="mb-6 w-full rounded-[10px] border border-line bg-surface-sunken px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
+                className="mb-6 w-full rounded-md border border-line bg-surface-sunken px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
               />
 
               <button
@@ -145,7 +145,7 @@ export function Login() {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               placeholder="4-digit code"
-              className="mb-6 w-full rounded-[10px] border border-line bg-surface-sunken px-3.5 py-2.5 text-center text-sm tracking-[0.3em] text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
+              className="mb-6 w-full rounded-md border border-line bg-surface-sunken px-3.5 py-2.5 text-center text-sm tracking-[0.3em] text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary/40"
             />
             <button
               type="submit"

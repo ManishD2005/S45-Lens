@@ -48,6 +48,8 @@ export interface IpoSummary {
   closesInDays?: number
   minInvestment?: number
   logoUrl?: string
+  listedPrice?: number
+  listedChangePercent?: number
 }
 
 export interface IpoDetail extends IpoSummary {

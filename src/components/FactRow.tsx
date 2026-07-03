@@ -8,7 +8,7 @@ const TONE_ICON = {
 }
 
 const TONE_COLOR = {
-  success: 'text-accent',
+  success: 'text-primary',
   warning: 'text-warning',
   danger: 'text-danger',
 }

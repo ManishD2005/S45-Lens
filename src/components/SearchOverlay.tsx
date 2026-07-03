@@ -88,7 +88,7 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
               type="button"
               onClick={() => setQuery('')}
               aria-label="Clear search"
-              className="shrink-0 text-ink-faint hover:text-ink"
+              className="flex h-11 w-11 shrink-0 items-center justify-center text-ink-faint hover:text-ink"
             >
               <IconClose width={16} height={16} />
             </button>

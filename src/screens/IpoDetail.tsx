@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { getIpoDetail } from '../data/ipos'
 import { useAppState } from '../lib/appState'
 import { StatusPill } from '../components/StatusPill'
-import { DockedChatPanel, MobileChatSheet } from '../components/ChatPanel'
+import { ChatWidget } from '../components/ChatPanel'
 import { IconBookmark, IconChevronLeft, IconShare } from '../components/icons'
 import { SummaryTab } from './ipoDetail/SummaryTab'
 import { DeepDiveTab } from './ipoDetail/DeepDiveTab'
@@ -15,12 +15,19 @@ type Tab = (typeof TABS)[number]
 
 export function IpoDetail() {
   const { slug } = useParams<{ slug: string }>()
-  const { isSaved, toggleSaved } = useAppState()
+  const { isSaved, toggleSaved, recordIpoView } = useAppState()
   const [tab, setTab] = useState<Tab>('Summary')
   const [toast, setToast] = useState<string | null>(null)
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   const ipo = slug ? getIpoDetail(slug) : undefined
+
+  useEffect(() => {
+    if (slug) recordIpoView(slug)
+    // only re-run when the slug itself changes, not on every recordIpoView identity change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug])
+
   if (!ipo) return <Navigate to="/" replace />
 
   const saved = isSaved(ipo.slug)
@@ -45,13 +52,13 @@ export function IpoDetail() {
   }
 
   return (
-    <div className="mx-auto flex max-w-7xl">
-      <div className="min-w-0 flex-1 px-4 pb-24 sm:px-8 lg:pb-16">
+    <div className="mx-auto max-w-7xl">
+      <div className="px-4 pb-24 sm:px-8">
         <div className="flex items-center gap-3 pt-6">
           <Link
             to="/"
             aria-label="Back to home"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-sunken hover:text-ink"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-sunken hover:text-ink"
           >
             <IconChevronLeft />
           </Link>
@@ -72,7 +79,7 @@ export function IpoDetail() {
             onClick={handleBookmark}
             aria-label={saved ? 'Remove from saved' : 'Save IPO'}
             aria-pressed={saved}
-            className={`flex h-9 w-9 items-center justify-center rounded-full border transition-colors ${
+            className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
               saved
                 ? 'border-primary/40 bg-accent-soft text-primary'
                 : 'border-line text-ink-muted hover:border-primary/40 hover:text-primary'
@@ -84,17 +91,11 @@ export function IpoDetail() {
             type="button"
             onClick={handleShare}
             aria-label="Copy link to this IPO"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink-muted transition-colors hover:border-primary/40 hover:text-primary"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink-muted transition-colors hover:border-primary/40 hover:text-primary"
           >
             <IconShare width={18} height={18} />
           </button>
         </div>
-
-        {ipo.illustrative && (
-          <p className="mt-4 rounded-card bg-warning-soft px-4 py-2.5 text-xs text-warning">
-            This IPO uses illustrative sample data for the prototype, not a real verified filing.
-          </p>
-        )}
 
         <div
           role="tablist"
@@ -125,8 +126,7 @@ export function IpoDetail() {
         </div>
       </div>
 
-      <DockedChatPanel ipo={ipo} />
-      <MobileChatSheet ipo={ipo} />
+      <ChatWidget ipo={ipo} />
 
       {toast && (
         <div

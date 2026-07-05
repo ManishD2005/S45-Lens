@@ -1,4 +1,6 @@
 import type { IpoDetail } from '../types'
+import { formatInr } from './ipoFormat'
+import { formatEventDate, getIpoFullTimeline } from './ipoEvents'
 
 const ADVICE_TRIGGERS = ['should i invest', 'should i apply', 'worth buying', 'is it a buy', 'guaranteed']
 
@@ -9,6 +11,46 @@ export function mockAssistantReply(question: string, ipo: IpoDetail): { text: st
     return {
       text: `I can only help you understand verified facts about ${ipo.name} — I can't tell you whether to invest. Try asking about revenue growth, risks, use of proceeds, or the promoter.`,
     }
+  }
+
+  // These factual lookups mirror the Full Report tab's FAQ — both read from
+  // `ipo.fullReport`, so the answers can never drift apart.
+  if (q.includes('price band') || q.includes('price range')) {
+    return ipo.fullReport
+      ? { text: `The price band is ${ipo.fullReport.issueMechanics.priceBand}.`, source: 'source: DRHP' }
+      : { text: `Price band details aren't available for ${ipo.name} in this prototype.` }
+  }
+
+  if (q.includes('lot size') || q.includes('minimum investment') || q.includes('min investment') || q.includes('how many shares')) {
+    const retailTier = ipo.fullReport?.applicationTiers.find((t) => t.category === 'Retail')
+    return retailTier
+      ? {
+          text: `The minimum retail application is ${retailTier.lotsMin} lot of ${retailTier.sharesMin} shares, amounting to ${formatInr(retailTier.amountMin)}.`,
+          source: 'source: DRHP',
+        }
+      : { text: `Lot size details aren't available for ${ipo.name} in this prototype.` }
+  }
+
+  if (q.includes('listing date') || q.includes('when does it list') || q.includes('when will it list') || q.includes('when does the ipo list')) {
+    const listingStep = getIpoFullTimeline(ipo)?.find((s) => s.label === 'Listing date')
+    return listingStep
+      ? { text: `The tentative listing date is ${formatEventDate(listingStep.date)}.`, source: 'source: exchange timeline' }
+      : { text: `${ipo.name} is no longer open for bidding, so a forward listing date isn't applicable.` }
+  }
+
+  if (q.includes('p/e') || q.includes('pe ratio') || q.includes('price to earnings') || q.includes('price-to-earnings')) {
+    return ipo.fullReport
+      ? {
+          text: `Based on post-issue EPS, ${ipo.name} is priced at ${ipo.fullReport.valuationRatios.peBasedOnPostIssueEps}x P/E.`,
+          source: 'source: DRHP',
+        }
+      : { text: `P/E details aren't available for ${ipo.name} in this prototype.` }
+  }
+
+  if (q.includes('face value')) {
+    return ipo.fullReport
+      ? { text: `Each equity share has a face value of ${formatInr(ipo.fullReport.issueMechanics.faceValue)}.`, source: 'source: DRHP' }
+      : { text: `Face value details aren't available for ${ipo.name} in this prototype.` }
   }
 
   if (q.includes('chicken') || q.includes('concentration')) {

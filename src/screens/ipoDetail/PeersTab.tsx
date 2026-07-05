@@ -1,15 +1,67 @@
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import type { IpoDetail } from '../../types'
 import { PhaseTag } from '../../components/PhaseTag'
+import { InfoCard } from '../../components/InfoCard'
+
+function peerComparisonSummary(ipo: IpoDetail): string | null {
+  const subject = ipo.peers.find((p) => p.isSubject)
+  const others = ipo.peers.filter((p) => !p.isSubject)
+  if (!subject || others.length === 0) return null
+
+  const shortName = ipo.name.split(' (')[0]
+  const cheaperThan = others.filter((p) => subject.pe < p.pe).length
+
+  if (cheaperThan === 0) {
+    return `${shortName} is priced higher than all ${others.length} listed peers on P/E.`
+  }
+  if (cheaperThan === others.length) {
+    return `${shortName} is priced lower than all ${others.length} listed peers on P/E.`
+  }
+  return `${shortName} is priced lower than ${cheaperThan} of ${others.length} peers on P/E.`
+}
+
+function median(values: number[]): number {
+  if (values.length === 0) return 0
+  const sorted = [...values].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid]
+}
+
+function formatCr(value: number): string {
+  return `₹${value.toLocaleString('en-IN')} Cr`
+}
+
+function StatPairRow({ label, subjectValue, peerValue }: { label: string; subjectValue: string; peerValue: string }) {
+  return (
+    <div className="flex items-center justify-between rounded-card border border-line bg-surface px-4 py-3.5">
+      <span className="text-sm text-ink-muted">{label}</span>
+      <span className="text-sm text-ink">
+        <span className="font-medium">{subjectValue}</span>
+        <span className="mx-1.5 text-ink-faint">vs. peer median</span>
+        <span className="font-medium">{peerValue}</span>
+      </span>
+    </div>
+  )
+}
 
 export function PeersTab({ ipo }: { ipo: IpoDetail }) {
   const data = ipo.peers.map((p) => ({ name: p.name, pe: p.pe, isSubject: !!p.isSubject }))
   const maxPe = Math.max(...data.map((d) => d.pe), 1)
+  const summary = peerComparisonSummary(ipo)
+
+  const extendedPeers = ipo.fullReport?.extendedPeers
+  const subjectPeer = extendedPeers?.find((p) => p.isSubject)
+  const otherPeers = extendedPeers?.filter((p) => !p.isSubject) ?? []
+  const hasScaleContext = Boolean(subjectPeer) && otherPeers.length > 0
+
+  const peerMedianRonw = median(otherPeers.map((p) => p.ronwPct))
+  const peerMedianRevenue = median(otherPeers.map((p) => p.revenueCr))
+  const peerMedianGrowth = median(otherPeers.map((p) => p.revenueGrowthPct))
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <p className="label-caps text-ink-muted">Valuation multiple vs. peers (P/E)</p>
+        <p className="text-xl font-semibold text-heading">Valuation multiple vs. peers (P/E)</p>
         <PhaseTag variant="fact" />
       </div>
 
@@ -54,10 +106,27 @@ export function PeersTab({ ipo }: { ipo: IpoDetail }) {
         </ResponsiveContainer>
       </div>
 
-      <p className="text-sm text-ink-faint">
-        Illustrative / placeholder data for this prototype. In Phase 1, this comparison is data-only — no
-        &ldquo;expensive&rdquo; or &ldquo;cheap&rdquo; judgment is attached. A Phase 2 version would add an explicit read.
-      </p>
+      {hasScaleContext && subjectPeer && (
+        <div className="space-y-2.5">
+          <StatPairRow label="Return on net worth" subjectValue={`${subjectPeer.ronwPct}%`} peerValue={`${peerMedianRonw}%`} />
+          <StatPairRow
+            label="Revenue scale"
+            subjectValue={formatCr(subjectPeer.revenueCr)}
+            peerValue={formatCr(peerMedianRevenue)}
+          />
+          <StatPairRow
+            label="Revenue growth"
+            subjectValue={`${subjectPeer.revenueGrowthPct}%`}
+            peerValue={`${peerMedianGrowth}%`}
+          />
+        </div>
+      )}
+
+      {summary && (
+        <InfoCard variant="read" label="S45's read">
+          {summary}
+        </InfoCard>
+      )}
     </div>
   )
 }

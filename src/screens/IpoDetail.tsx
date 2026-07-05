@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { getIpoDetail } from '../data/ipos'
 import { useAppState } from '../lib/appState'
-import { StatusPill } from '../components/StatusPill'
+import { formatInr, getIpoCountdownText, monogramColor } from '../lib/ipoFormat'
 import { ChatWidget } from '../components/ChatPanel'
 import { IconBookmark, IconChevronLeft, IconShare } from '../components/icons'
 import { SummaryTab } from './ipoDetail/SummaryTab'
 import { DeepDiveTab } from './ipoDetail/DeepDiveTab'
 import { PeersTab } from './ipoDetail/PeersTab'
 import { TransparencyTab } from './ipoDetail/TransparencyTab'
+import { FullReportTab } from './ipoDetail/FullReportTab'
 
-const TABS = ['Summary', 'Deep dive', 'Peers', 'Transparency'] as const
+const TABS = ['Summary', 'Deep dive', 'Peers', 'Transparency', 'Full Report'] as const
 type Tab = (typeof TABS)[number]
 
 export function IpoDetail() {
@@ -51,78 +52,113 @@ export function IpoDetail() {
     showToast('Link copied to clipboard')
   }
 
+  const shortName = ipo.name.split(' (')[0]
+
   return (
     <div className="mx-auto max-w-7xl">
-      <div className="px-4 pb-24 sm:px-8">
-        <div className="flex items-center gap-3 pt-6">
-          <Link
-            to="/"
-            aria-label="Back to home"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-sunken hover:text-ink"
-          >
-            <IconChevronLeft />
-          </Link>
-          {ipo.logoUrl && (
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-line bg-white p-1.5">
-              <img src={ipo.logoUrl} alt="" className="h-full w-full object-contain" />
-            </span>
-          )}
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <span className="label-caps text-ink-faint">{ipo.category}</span>
-              <StatusPill tone={ipo.status} />
-            </div>
-            <h1 className="mt-1 truncate font-serif text-xl text-ink sm:text-2xl">{ipo.name}</h1>
-          </div>
-          <button
-            type="button"
-            onClick={handleBookmark}
-            aria-label={saved ? 'Remove from saved' : 'Save IPO'}
-            aria-pressed={saved}
-            className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
-              saved
-                ? 'border-primary/40 bg-accent-soft text-primary'
-                : 'border-line text-ink-muted hover:border-primary/40 hover:text-primary'
-            }`}
-          >
-            <IconBookmark filled={saved} width={18} height={18} />
-          </button>
-          <button
-            type="button"
-            onClick={handleShare}
-            aria-label="Copy link to this IPO"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink-muted transition-colors hover:border-primary/40 hover:text-primary"
-          >
-            <IconShare width={18} height={18} />
-          </button>
-        </div>
-
-        <div
-          role="tablist"
-          aria-label="IPO sections"
-          className="sticky top-16 z-20 -mx-4 mt-6 flex gap-1 overflow-x-auto border-b border-line bg-surface/95 px-4 backdrop-blur scrollbar-thin sm:-mx-8 sm:px-8"
+      <div className="px-4 pb-24 pt-6 sm:px-8">
+        <Link
+          to="/"
+          aria-label="Back to home"
+          className="mb-2 flex h-11 w-11 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-sunken hover:text-ink lg:hidden"
         >
-          {TABS.map((t) => (
-            <button
-              key={t}
-              type="button"
-              role="tab"
-              aria-selected={tab === t}
-              onClick={() => setTab(t)}
-              className={`shrink-0 border-b-2 px-3.5 py-2.5 text-sm font-medium transition-colors ${
-                tab === t ? 'border-primary text-ink' : 'border-transparent text-ink-muted hover:text-ink'
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
+          <IconChevronLeft />
+        </Link>
 
-        <div key={tab} role="tabpanel" className="anim-fade-up pt-6">
-          {tab === 'Summary' && <SummaryTab ipo={ipo} />}
-          {tab === 'Deep dive' && <DeepDiveTab ipo={ipo} />}
-          {tab === 'Peers' && <PeersTab ipo={ipo} />}
-          {tab === 'Transparency' && <TransparencyTab ipo={ipo} />}
+        <div className="lg:grid lg:grid-cols-[320px_1fr] lg:items-start lg:gap-8">
+          <aside className="lg:sticky lg:top-20">
+            <div className="overflow-hidden rounded-card border border-line bg-surface">
+              <div className="bg-gradient-to-b from-[#003A36] to-[#055D56] p-5">
+                <div className="flex items-start gap-3">
+                  {ipo.logoUrl ? (
+                    <span className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-sm bg-white p-2">
+                      <img src={ipo.logoUrl} alt="" className="h-full w-full object-contain" />
+                    </span>
+                  ) : (
+                    <span
+                      className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-sm bg-white text-2xl font-bold"
+                      style={{ color: monogramColor(ipo.slug) }}
+                      aria-hidden="true"
+                    >
+                      {shortName.charAt(0)}
+                    </span>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <h1 className="text-lg font-medium text-white">{shortName}</h1>
+                    <p className="mt-1 line-clamp-2 text-sm leading-5 text-white/70">{ipo.oneLiner}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-ink">{getIpoCountdownText(ipo)}</span>
+                  {typeof ipo.listedPrice === 'number' ? (
+                    <span className="text-sm font-medium text-ink">{formatInr(ipo.listedPrice)}</span>
+                  ) : (
+                    typeof ipo.minInvestment === 'number' && (
+                      <span className="text-sm font-medium text-ink">Min {formatInr(ipo.minInvestment)}</span>
+                    )
+                  )}
+                </div>
+
+                <div className="mt-4 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleBookmark}
+                    aria-pressed={saved}
+                    className={`flex h-11 flex-1 items-center justify-center gap-1.5 rounded-full border text-sm font-medium transition-colors ${
+                      saved
+                        ? 'border-primary/40 bg-accent-soft text-primary'
+                        : 'border-line text-ink-muted hover:border-primary/40 hover:text-primary'
+                    }`}
+                  >
+                    <IconBookmark filled={saved} width={16} height={16} />
+                    {saved ? 'Saved' : 'Save'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    aria-label="Copy link to this IPO"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-muted transition-colors hover:border-primary/40 hover:text-primary"
+                  >
+                    <IconShare width={16} height={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <div className="mt-6 lg:mt-0">
+            <div
+              role="tablist"
+              aria-label="IPO sections"
+              className="sticky top-16 z-20 -mx-4 flex gap-1 overflow-x-auto border-b border-line bg-surface/95 px-4 backdrop-blur scrollbar-thin sm:-mx-8 sm:px-8 lg:mx-0 lg:px-0"
+            >
+              {TABS.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === t}
+                  onClick={() => setTab(t)}
+                  className={`shrink-0 border-b-2 px-3.5 py-2.5 text-sm font-medium transition-colors ${
+                    tab === t ? 'border-primary text-ink' : 'border-transparent text-ink-muted hover:text-ink'
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+
+            <div key={tab} role="tabpanel" className="anim-fade-up pt-6">
+              {tab === 'Summary' && <SummaryTab ipo={ipo} onViewFullReport={() => setTab('Full Report')} />}
+              {tab === 'Deep dive' && <DeepDiveTab ipo={ipo} />}
+              {tab === 'Peers' && <PeersTab ipo={ipo} />}
+              {tab === 'Transparency' && <TransparencyTab ipo={ipo} onViewFullReport={() => setTab('Full Report')} />}
+              {tab === 'Full Report' && <FullReportTab ipo={ipo} />}
+            </div>
+          </div>
         </div>
       </div>
 

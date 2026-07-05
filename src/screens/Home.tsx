@@ -35,7 +35,7 @@ export function Home() {
       <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-8">
         <section aria-label="Popular IPOs">
           <div className="mb-5 flex items-center justify-between gap-3">
-            <h2 className="text-xl font-semibold text-ink">Popular IPOs on S45 Lens</h2>
+            <h2 className="text-xl font-semibold text-heading">Popular IPOs on S45 Lens</h2>
             <Link
               to="/search"
               className="shrink-0 text-sm font-medium text-primary transition-colors hover:text-primary/80"

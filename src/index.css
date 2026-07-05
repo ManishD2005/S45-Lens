@@ -28,12 +28,13 @@
   --color-ink: #14171a;
   --color-ink-muted: #61686f;
   --color-ink-faint: #6b7178;
+  --color-heading: #2a2d31;
 
   --color-surface: #ffffff;
   --color-surface-sunken: #f7f7f5;
   --color-line: #e7e6e2;
 
-  --color-warning: #a5741f;
+  --color-warning: #b45309;
   --color-warning-soft: #f7ecd9;
   --color-danger: #a3413a;
   --color-danger-soft: #f6e5e3;

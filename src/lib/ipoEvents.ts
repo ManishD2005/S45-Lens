@@ -38,6 +38,45 @@ export function getIpoOpenCloseDates(ipo: IpoSummary): { openDate: Date; closeDa
   return { openDate, closeDate }
 }
 
+export interface TimelineStep {
+  label: string
+  date: Date
+}
+
+const DATE_FORMAT = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+
+export function formatEventDate(date: Date): string {
+  return DATE_FORMAT.format(date)
+}
+
+/**
+ * Post-listing updates are stored as an offset from "today" (not an absolute
+ * date) so they stay fresh no matter when this is viewed, same principle as
+ * the rest of this file.
+ */
+export function dateDaysAgo(days: number): Date {
+  return addDays(startOfDay(new Date()), -days)
+}
+
+/**
+ * Standard SEBI T+3 listing timeline, derived from the same open/close dates
+ * used elsewhere so the Full Report tab stays consistent with the rest of the app.
+ */
+export function getIpoFullTimeline(ipo: IpoSummary): TimelineStep[] | null {
+  const dates = getIpoOpenCloseDates(ipo)
+  if (!dates) return null
+
+  return [
+    { label: 'Anchor investor bidding', date: addDays(dates.openDate, -1) },
+    { label: 'IPO opens', date: dates.openDate },
+    { label: 'IPO closes', date: dates.closeDate },
+    { label: 'Basis of allotment finalised', date: addDays(dates.closeDate, 1) },
+    { label: 'Refunds initiated', date: addDays(dates.closeDate, 1) },
+    { label: 'Shares credited to demat', date: addDays(dates.closeDate, 2) },
+    { label: 'Listing date', date: addDays(dates.closeDate, LISTING_OFFSET_DAYS) },
+  ]
+}
+
 export function getIpoEvents(): IpoEvent[] {
   const events: IpoEvent[] = []
 

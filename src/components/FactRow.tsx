@@ -17,7 +17,12 @@ const TONE_COLOR = {
 export function FactRow({ fact }: { fact: FactItem }) {
   const Icon = TONE_ICON[fact.tone]
   const [open, setOpen] = useState(false)
+  const [supportsHover, setSupportsHover] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setSupportsHover(window.matchMedia('(hover: hover)').matches)
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -39,7 +44,12 @@ export function FactRow({ fact }: { fact: FactItem }) {
     <div className="flex items-center gap-3 rounded-card border border-line bg-surface px-4 py-3.5">
       <Icon filled className={`shrink-0 ${TONE_COLOR[fact.tone]}`} />
       <p className="min-w-0 flex-1 text-[0.95rem] leading-snug text-ink">{fact.text}</p>
-      <div ref={ref} className="relative shrink-0">
+      <div
+        ref={ref}
+        className="relative shrink-0"
+        onMouseEnter={() => supportsHover && setOpen(true)}
+        onMouseLeave={() => supportsHover && setOpen(false)}
+      >
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}

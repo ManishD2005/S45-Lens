@@ -1,6 +1,6 @@
 export type IpoCategory = 'SME' | 'Mainboard'
 
-export type StatusTone = 'high-confidence' | 'mixed-signals' | 'closed'
+export type IpoLifecycleStatus = 'open' | 'closing-soon' | 'listed' | 'closed'
 
 export type FactTone = 'success' | 'warning' | 'danger'
 
@@ -13,11 +13,6 @@ export interface FactItem {
 export interface RiskFactor {
   rank: number
   text: string
-}
-
-export interface FactReadPair {
-  fact: string
-  read: string
 }
 
 export interface PeerMultiple {
@@ -178,27 +173,29 @@ export interface IpoSummary {
   name: string
   category: IpoCategory
   oneLiner: string
-  status: StatusTone
   isOpen: boolean
   closesInDays?: number
   minInvestment?: number
   logoUrl?: string
   listedPrice?: number
   listedChangePercent?: number
+  listedDaysAgo?: number
+}
+
+export interface UseOfProceedsBucket {
+  label: string
+  amountCr: number
 }
 
 export interface IpoDetail extends IpoSummary {
-  confidenceLabel: string
-  verdictHeadline: string
-  verdictBody: string
   topFacts: FactItem[]
   howTheyMakeMoney: string
   useOfProceeds: string
+  useOfProceedsBreakdown: UseOfProceedsBucket[]
   strengths: string[]
   risks: RiskFactor[]
   promoter: Promoter
   peers: PeerMultiple[]
-  factReadPairs: FactReadPair[]
   sourcesChecked: string[]
   verifiedSourceCount: number
   sampleChat: ChatMessage[]
@@ -212,10 +209,4 @@ export interface UserProfile {
   name: string
   email: string
   phone: string
-}
-
-export interface ApplicationRecord {
-  companyName: string
-  status: 'applied' | 'allotted' | 'not-allotted' | 'refunded'
-  date: string
 }

@@ -1,12 +1,20 @@
 import { Link } from 'react-router-dom'
-import { STATUS_PILL_LABEL, STATUS_PILL_STYLE, formatInr, getIpoCountdownText, monogramColor } from '../lib/ipoFormat'
+import {
+  LIFECYCLE_STATUS_LABEL,
+  LIFECYCLE_STATUS_STYLE,
+  formatInr,
+  getIpoCountdownText,
+  getIpoLifecycleStatus,
+  monogramColor,
+} from '../lib/ipoFormat'
 import { useAppState } from '../lib/appState'
 import { IconBookmark } from './icons'
 import type { IpoSummary } from '../types'
 
 export function IpoCard({ ipo }: { ipo: IpoSummary }) {
   const { isSaved, toggleSaved } = useAppState()
-  const closed = ipo.status === 'closed'
+  const lifecycleStatus = getIpoLifecycleStatus(ipo)
+  const closed = lifecycleStatus === 'closed'
   const shortName = ipo.name.split(' (')[0]
   const saved = isSaved(ipo.slug)
 
@@ -61,9 +69,9 @@ export function IpoCard({ ipo }: { ipo: IpoSummary }) {
             {ipo.category}
           </span>
           <span
-            className={`rounded-sm px-2.5 py-1 text-[0.6875rem] font-medium uppercase tracking-wide ${STATUS_PILL_STYLE[ipo.status]}`}
+            className={`rounded-sm px-2.5 py-1 text-[0.6875rem] font-medium uppercase tracking-wide ${LIFECYCLE_STATUS_STYLE[lifecycleStatus]}`}
           >
-            {STATUS_PILL_LABEL[ipo.status]}
+            {LIFECYCLE_STATUS_LABEL[lifecycleStatus]}
           </span>
         </div>
       </div>

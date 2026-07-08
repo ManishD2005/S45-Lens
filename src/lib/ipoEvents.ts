@@ -77,6 +77,28 @@ export function getIpoFullTimeline(ipo: IpoSummary): TimelineStep[] | null {
   ]
 }
 
+/**
+ * Soonest date relevant to an open/upcoming IPO: its close date if bidding
+ * has already started, otherwise its open date. Reuses getIpoOpenCloseDates
+ * so Home's "Open & Upcoming" sort never drifts from the countdown text
+ * shown elsewhere in the app.
+ */
+export function getIpoRelevantOpenDate(ipo: IpoSummary): Date | null {
+  const dates = getIpoOpenCloseDates(ipo)
+  if (!dates) return null
+  return new Date() >= dates.openDate ? dates.closeDate : dates.openDate
+}
+
+/**
+ * Listing date for an already-listed IPO, derived the same way postListing
+ * update dates are (an offset from "today"), so it stays fresh regardless
+ * of when this is viewed.
+ */
+export function getIpoListedDate(ipo: IpoSummary): Date | null {
+  if (typeof ipo.listedDaysAgo !== 'number') return null
+  return dateDaysAgo(ipo.listedDaysAgo)
+}
+
 export function getIpoEvents(): IpoEvent[] {
   const events: IpoEvent[] = []
 

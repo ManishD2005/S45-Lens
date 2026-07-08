@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { getIpoDetail } from '../data/ipos'
 import { useAppState } from '../lib/appState'
-import { formatInr, getIpoCountdownText, monogramColor } from '../lib/ipoFormat'
+import { buildAtAGlance, formatInr, getIpoCountdownText, monogramColor } from '../lib/ipoFormat'
 import { ChatWidget } from '../components/ChatPanel'
-import { IconBookmark, IconChevronLeft, IconShare } from '../components/icons'
+import { IconBookmark, IconChevronLeft, IconInfo, IconShare } from '../components/icons'
 import { SummaryTab } from './ipoDetail/SummaryTab'
 import { DeepDiveTab } from './ipoDetail/DeepDiveTab'
 import { PeersTab } from './ipoDetail/PeersTab'
@@ -45,8 +45,20 @@ export function IpoDetail() {
     showToast(saved ? 'Removed from saved' : 'Saved — track it from your profile')
   }
 
-  function handleShare() {
-    if (navigator.clipboard && typeof window !== 'undefined') {
+  async function handleShare() {
+    if (!ipo) return
+    const shareText = buildAtAGlance(ipo)
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: ipo.name, text: shareText, url: window.location.href })
+      } catch {
+        // user cancelled the native share sheet — nothing further to do
+      }
+      return
+    }
+
+    if (navigator.clipboard) {
       navigator.clipboard.writeText(window.location.href).catch(() => {})
     }
     showToast('Link copied to clipboard')
@@ -66,7 +78,7 @@ export function IpoDetail() {
         </Link>
 
         <div className="lg:grid lg:grid-cols-[320px_1fr] lg:items-start lg:gap-8">
-          <aside className="lg:sticky lg:top-20">
+          <aside className="lg:sticky lg:top-[88px]">
             <div className="overflow-hidden rounded-card border border-line bg-surface">
               <div className="bg-gradient-to-b from-[#003A36] to-[#055D56] p-5">
                 <div className="flex items-start gap-3">
@@ -127,13 +139,19 @@ export function IpoDetail() {
                 </div>
               </div>
             </div>
+
+            <div className="mt-4 flex items-start gap-2 rounded-card border border-line bg-surface px-4 py-2.5 text-xs text-ink-muted">
+              <IconInfo width={14} height={14} className="mt-0.5 shrink-0" />
+              <span>S45 acted as banker on this IPO and was compensated by {shortName}.</span>
+            </div>
           </aside>
 
           <div className="mt-6 lg:mt-0">
+            <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-16 z-[19] h-6 bg-surface" />
             <div
               role="tablist"
               aria-label="IPO sections"
-              className="sticky top-16 z-20 -mx-4 flex gap-1 overflow-x-auto border-b border-line bg-surface/95 px-4 backdrop-blur scrollbar-thin sm:-mx-8 sm:px-8 lg:mx-0 lg:px-0"
+              className="sticky top-[88px] z-20 -mx-4 flex gap-1 overflow-x-auto border-b border-line bg-surface px-4 scrollbar-thin sm:-mx-8 sm:px-8 lg:mx-0 lg:px-0"
             >
               {TABS.map((t) => (
                 <button

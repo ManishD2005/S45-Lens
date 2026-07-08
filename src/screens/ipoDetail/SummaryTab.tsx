@@ -1,8 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import type { IpoDetail } from '../../types'
 import { FactRow } from '../../components/FactRow'
+import { PhaseTag } from '../../components/PhaseTag'
 import { IconChevronRight } from '../../components/icons'
-import { STATUS_PILL_LABEL, STATUS_PILL_STYLE, formatInr, isIpoListed } from '../../lib/ipoFormat'
+import {
+  LIFECYCLE_STATUS_LABEL,
+  LIFECYCLE_STATUS_STYLE,
+  buildAtAGlance,
+  formatInr,
+  getIpoLifecycleStatus,
+  getSourceCheckLines,
+  isIpoListed,
+} from '../../lib/ipoFormat'
 
 function VerifiedSourcesNote({ ipo }: { ipo: IpoDetail }) {
   const [open, setOpen] = useState(false)
@@ -33,6 +42,8 @@ function VerifiedSourcesNote({ ipo }: { ipo: IpoDetail }) {
     return <span className="text-ink-muted">Verified against {ipo.verifiedSourceCount} independent sources</span>
   }
 
+  const checkLines = getSourceCheckLines(ipo)
+
   return (
     <div
       ref={ref}
@@ -51,14 +62,15 @@ function VerifiedSourcesNote({ ipo }: { ipo: IpoDetail }) {
       {open && (
         <div
           role="tooltip"
-          className="anim-fade-up absolute bottom-full right-0 z-10 mb-2 w-64 rounded-card border border-line bg-surface p-3.5 shadow-lg"
+          className="anim-fade-up absolute bottom-full right-0 z-10 mb-2 w-80 rounded-card border border-line bg-surface p-3.5 shadow-lg"
         >
-          <p className="label-caps mb-2 text-ink-faint">Sources checked</p>
-          <div className="flex flex-wrap gap-1.5">
-            {ipo.sourcesChecked.map((source) => (
-              <span key={source} className="label-caps rounded-pill bg-primary px-2.5 py-1 text-white">
-                {source}
-              </span>
+          <p className="label-caps mb-2.5 text-ink-faint">Sources checked</p>
+          <div className="space-y-2.5">
+            {checkLines.map((line) => (
+              <div key={line.category}>
+                <p className="text-xs font-medium text-ink">{line.category}</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-ink-muted">{line.text}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -69,29 +81,32 @@ function VerifiedSourcesNote({ ipo }: { ipo: IpoDetail }) {
 
 export function SummaryTab({ ipo, onViewFullReport }: { ipo: IpoDetail; onViewFullReport: () => void }) {
   const latestUpdate = ipo.postListing?.updates[0]
+  const lifecycleStatus = getIpoLifecycleStatus(ipo)
 
   return (
     <div className="space-y-8">
       <section>
-        <p className="mb-3 text-xl font-semibold text-heading">S45 Lens verdict</p>
+        <div className="mb-6 flex items-center justify-between">
+          <p className="text-xl font-semibold text-heading">At a glance</p>
+          <PhaseTag variant="fact" />
+        </div>
         <div className="rounded-card border border-line bg-surface-sunken p-5">
           <div className="mb-3 flex flex-wrap gap-2">
             <span className="rounded-sm bg-[#3F444A] px-2.5 py-1 text-[0.6875rem] font-medium uppercase tracking-wide text-white">
               {ipo.category}
             </span>
             <span
-              className={`rounded-sm px-2.5 py-1 text-[0.6875rem] font-medium uppercase tracking-wide ${STATUS_PILL_STYLE[ipo.status]}`}
+              className={`rounded-sm px-2.5 py-1 text-[0.6875rem] font-medium uppercase tracking-wide ${LIFECYCLE_STATUS_STYLE[lifecycleStatus]}`}
             >
-              {STATUS_PILL_LABEL[ipo.status]}
+              {LIFECYCLE_STATUS_LABEL[lifecycleStatus]}
             </span>
           </div>
-          <h2 className="mb-2 text-xl font-medium leading-snug text-ink">{ipo.verdictHeadline}</h2>
-          <p className="text-[0.95rem] leading-relaxed text-ink-muted">{ipo.verdictBody}</p>
+          <p className="text-[0.95rem] leading-relaxed text-ink">{buildAtAGlance(ipo)}</p>
         </div>
       </section>
 
       <section>
-        <p className="mb-3 text-xl font-semibold text-heading">Top 3 facts that matter</p>
+        <p className="mb-6 text-xl font-semibold text-heading">Top 3 facts that matter</p>
         <div className="space-y-2.5">
           {ipo.topFacts.map((fact, i) => (
             <FactRow key={i} fact={fact} />
@@ -101,7 +116,7 @@ export function SummaryTab({ ipo, onViewFullReport }: { ipo: IpoDetail; onViewFu
 
       {isIpoListed(ipo) && (
         <section>
-          <p className="mb-3 text-xl font-semibold text-heading">Since listing</p>
+          <p className="mb-6 text-xl font-semibold text-heading">Since listing</p>
           <div className="rounded-card border border-line bg-surface p-5">
             <div className="flex items-center justify-between">
               <span className="text-2xl font-semibold text-ink">{formatInr(ipo.listedPrice!)}</span>

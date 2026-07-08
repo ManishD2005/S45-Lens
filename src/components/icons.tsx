@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react'
 
-type IconProps = SVGProps<SVGSVGElement>
+export type IconProps = SVGProps<SVGSVGElement>
 
 const base = {
   width: 20,
@@ -230,21 +230,3 @@ export function IconSort(props: IconProps) {
   )
 }
 
-export function IconBell(props: IconProps) {
-  return (
-    <svg {...base} {...props}>
-      <path d="M6 10.5a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6H4c.5-.5 2-2 2-6Z" />
-      <path d="M10 19.5a2 2 0 0 0 4 0" />
-    </svg>
-  )
-}
-
-export function IconLogout(props: IconProps) {
-  return (
-    <svg {...base} {...props}>
-      <path d="M9 5H6a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h3" />
-      <path d="M13 16l4-4-4-4" />
-      <path d="M17 12H9" />
-    </svg>
-  )
-}

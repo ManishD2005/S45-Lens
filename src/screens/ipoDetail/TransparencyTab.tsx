@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { IpoDetail } from '../../types'
-import { InfoCard } from '../../components/InfoCard'
+import { PhaseTag } from '../../components/PhaseTag'
 import { IconChevronRight } from '../../components/icons'
 
 const METHODOLOGY: Record<string, string> = {
@@ -53,31 +53,13 @@ function HowWeVerify({ sourcesChecked }: { sourcesChecked: string[] }) {
 export function TransparencyTab({ ipo, onViewFullReport }: { ipo: IpoDetail; onViewFullReport: () => void }) {
   return (
     <div className="space-y-8">
-      <section>
-        <p className="mb-3 text-xl font-semibold text-heading">Fact vs. S45&rsquo;s read</p>
-        <div className="space-y-4">
-          {ipo.factReadPairs.length === 0 && (
-            <p className="rounded-card border border-line bg-surface-sunken px-5 py-8 text-center text-sm text-ink-muted">
-              No fact/read pairs available for this IPO in the prototype.
-            </p>
-          )}
-          {ipo.factReadPairs.map((pair, i) => (
-            <div key={i} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <InfoCard variant="fact" label="From the DRHP">
-                {pair.fact}
-              </InfoCard>
-              <InfoCard variant="read" label="S45's read">
-                {pair.read}
-              </InfoCard>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {ipo.leadManager && (
         <section>
-          <p className="mb-3 text-xl font-semibold text-heading">Lead manager track record</p>
-          <InfoCard variant="fact" label="From source">
+          <div className="mb-6 flex items-center justify-between">
+            <p className="text-xl font-semibold text-heading">Lead manager track record</p>
+            <PhaseTag variant="fact" label="From exchange filings" />
+          </div>
+          <div className="rounded-card border border-line bg-surface p-4">
             <p className="font-medium text-ink">{ipo.leadManager.name}</p>
             <p className="mt-1 text-ink-muted">
               {`${ipo.leadManager.belowIssuePriceCount} of ${ipo.leadManager.totalIssues} issues (${Math.round((ipo.leadManager.belowIssuePriceCount / ipo.leadManager.totalIssues) * 100)}%) closed below issue price on listing day.`}
@@ -90,12 +72,12 @@ export function TransparencyTab({ ipo, onViewFullReport }: { ipo: IpoDetail; onV
               See all {ipo.leadManager.totalIssues} issues
               <IconChevronRight width={14} height={14} />
             </button>
-          </InfoCard>
+          </div>
         </section>
       )}
 
       <section>
-        <p className="mb-3 text-xl font-semibold text-heading">Sources checked</p>
+        <p className="mb-6 text-xl font-semibold text-heading">Sources checked</p>
         <div className="flex flex-wrap gap-2">
           {ipo.sourcesChecked.length === 0 ? (
             <p className="text-sm text-ink-faint">Not available for this IPO in the prototype.</p>
@@ -116,8 +98,9 @@ export function TransparencyTab({ ipo, onViewFullReport }: { ipo: IpoDetail; onV
           AI
         </span>
         <p className="text-sm text-ink-muted">
-          Facts are AI-drafted from primary filings and reviewed by an S45 analyst before publishing. The read/verdict
-          content is gated behind SEBI Research Analyst registration in the real product.
+          Content on S45 Lens is for informational purposes and is not investment advice. All facts are sourced from
+          primary filings and independently cross-checked — see &ldquo;How we verify&rdquo; for details. Always read
+          the official DRHP before applying.
         </p>
       </section>
     </div>

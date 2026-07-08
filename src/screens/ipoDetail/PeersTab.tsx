@@ -1,7 +1,6 @@
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import type { IpoDetail } from '../../types'
 import { PhaseTag } from '../../components/PhaseTag'
-import { InfoCard } from '../../components/InfoCard'
 
 function peerComparisonSummary(ipo: IpoDetail): string | null {
   const subject = ipo.peers.find((p) => p.isSubject)
@@ -31,6 +30,26 @@ function formatCr(value: number): string {
   return `₹${value.toLocaleString('en-IN')} Cr`
 }
 
+/**
+ * Evenly-spaced "nice" tick values (steps of 1/2/5/10 × a power of ten) with
+ * ~25% headroom above the tallest bar. Recharts always renders a tick at the
+ * exact domain max, so an arbitrary domain (e.g. 75 on a 20-step grid) shows
+ * up as a cramped, uneven extra tick — generating the ticks ourselves and
+ * setting domain max to match the last one avoids that.
+ */
+function niceYAxisTicks(maxValue: number, targetTickCount = 5): number[] {
+  const roughStep = (maxValue * 1.25) / targetTickCount
+  const magnitude = 10 ** Math.floor(Math.log10(roughStep))
+  const residual = roughStep / magnitude
+  const niceResidual = residual > 5 ? 10 : residual > 2 ? 5 : residual > 1 ? 2 : 1
+  const step = niceResidual * magnitude
+  const top = Math.ceil((maxValue * 1.25) / step) * step
+
+  const ticks: number[] = []
+  for (let v = 0; v <= top; v += step) ticks.push(v)
+  return ticks
+}
+
 function StatPairRow({ label, subjectValue, peerValue }: { label: string; subjectValue: string; peerValue: string }) {
   return (
     <div className="flex items-center justify-between rounded-card border border-line bg-surface px-4 py-3.5">
@@ -47,6 +66,7 @@ function StatPairRow({ label, subjectValue, peerValue }: { label: string; subjec
 export function PeersTab({ ipo }: { ipo: IpoDetail }) {
   const data = ipo.peers.map((p) => ({ name: p.name, pe: p.pe, isSubject: !!p.isSubject }))
   const maxPe = Math.max(...data.map((d) => d.pe), 1)
+  const yTicks = niceYAxisTicks(maxPe)
   const summary = peerComparisonSummary(ipo)
 
   const extendedPeers = ipo.fullReport?.extendedPeers
@@ -71,13 +91,19 @@ export function PeersTab({ ipo }: { ipo: IpoDetail }) {
             <span className="h-2.5 w-2.5 rounded-full bg-primary" /> This IPO
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-ink-muted" /> Peers
+            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: '#9AA1A8' }} /> Peers
           </span>
         </div>
 
-        <ResponsiveContainer width="100%" height={260}>
-          <BarChart data={data} margin={{ top: 24, right: 8, left: -16, bottom: 8 }} barCategoryGap="30%">
-            <CartesianGrid vertical={false} stroke="#e7e6e2" strokeDasharray="0" />
+        <ResponsiveContainer width="100%" height={280}>
+          <BarChart data={data} margin={{ top: 40, right: 8, left: -16, bottom: 8 }} barCategoryGap="30%">
+            <defs>
+              <linearGradient id="peerBarGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#003A36" />
+                <stop offset="100%" stopColor="#055D56" />
+              </linearGradient>
+            </defs>
+            <CartesianGrid vertical={false} stroke="#f0efec" strokeDasharray="0" />
             <XAxis
               dataKey="name"
               tickLine={false}
@@ -85,7 +111,8 @@ export function PeersTab({ ipo }: { ipo: IpoDetail }) {
               tick={{ fill: '#61686f', fontSize: 12 }}
             />
             <YAxis
-              domain={[0, Math.ceil((maxPe * 1.25) / 5) * 5]}
+              domain={[0, yTicks[yTicks.length - 1]]}
+              ticks={yTicks}
               tickLine={false}
               axisLine={false}
               tick={{ fill: '#61686f', fontSize: 12 }}
@@ -93,7 +120,7 @@ export function PeersTab({ ipo }: { ipo: IpoDetail }) {
             />
             <Bar dataKey="pe" radius={[4, 4, 0, 0]} maxBarSize={48}>
               {data.map((d) => (
-                <Cell key={d.name} fill={d.isSubject ? '#055D56' : '#61686f'} />
+                <Cell key={d.name} fill={d.isSubject ? 'url(#peerBarGradient)' : '#9AA1A8'} />
               ))}
               <LabelList
                 dataKey="pe"
@@ -123,9 +150,9 @@ export function PeersTab({ ipo }: { ipo: IpoDetail }) {
       )}
 
       {summary && (
-        <InfoCard variant="read" label="S45's read">
-          {summary}
-        </InfoCard>
+        <div className="rounded-card border border-line bg-surface px-4 py-3.5">
+          <p className="text-sm text-ink">{summary}</p>
+        </div>
       )}
     </div>
   )

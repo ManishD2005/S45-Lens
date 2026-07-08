@@ -1,9 +1,9 @@
 import { ipoSummaries } from '../data/ipos'
 import { useAppState } from '../lib/appState'
+import { getIpoLifecycleStatus } from '../lib/ipoFormat'
 
 const SUGGESTION_TONE: Record<string, string> = {
-  'high-confidence': 'bg-accent-soft text-primary',
-  'mixed-signals': 'bg-warning-soft text-warning',
+  'closing-soon': 'bg-warning-soft text-warning',
 }
 
 export function SearchSuggestions({
@@ -50,7 +50,7 @@ export function SearchSuggestions({
               type="button"
               onClick={() => onPickIpo(ipo.slug, ipo.name)}
               className={`rounded-pill px-3.5 py-1.5 text-sm transition-colors hover:opacity-80 ${
-                SUGGESTION_TONE[ipo.status] ?? 'bg-surface-sunken text-ink-muted'
+                SUGGESTION_TONE[getIpoLifecycleStatus(ipo)] ?? 'bg-surface-sunken text-ink-muted'
               }`}
             >
               {ipo.name.split(' (')[0]}

@@ -1,7 +1,7 @@
 export function PhaseTag({ variant, label }: { variant: 'fact' | 'read'; label?: string }) {
   if (variant === 'fact') {
     return (
-      <span className="label-caps inline-flex items-center gap-1.5 rounded-pill border border-line px-2.5 py-1 text-ink-muted">
+      <span className="inline-flex items-center gap-1.5 rounded-pill bg-primary px-3.5 py-1.5 text-sm font-medium text-white">
         {label ?? 'From the DRHP'}
       </span>
     )

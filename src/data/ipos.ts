@@ -1,19 +1,14 @@
-import type { ApplicationRecord, IpoDetail, IpoSummary } from '../types'
+import type { IpoDetail, IpoSummary } from '../types'
 
 const zappfresh: IpoDetail = {
   slug: 'zappfresh',
   name: 'Zappfresh (DSM Fresh Foods Ltd)',
   category: 'SME',
   oneLiner: 'Farm-to-fork meat and seafood delivery across Delhi NCR',
-  status: 'high-confidence',
   isOpen: true,
   closesInDays: 2,
   minInvestment: 14948,
   logoUrl: '/zappfresh.png',
-  confidenceLabel: 'High confidence',
-  verdictHeadline: 'Established, growing steadily, one business line does most of the work',
-  verdictBody:
-    "A 10-year-old Delhi meat-delivery brand growing fast, but leaning heavily on one product, and raising money mainly to build cold storage in new cities.",
   topFacts: [
     {
       tone: 'success',
@@ -35,6 +30,12 @@ const zappfresh: IpoDetail = {
     "Zappfresh sells meat and seafood directly to consumers online and via app, sourcing straight from farms and running its own cold-chain logistics instead of going through middlemen.",
   useOfProceeds:
     '₹10.7 Cr of the ₹59.65 Cr raised goes to 6 new cold-storage units across Delhi, Mumbai, and Odisha over 2 years.',
+  useOfProceedsBreakdown: [
+    { label: 'Capex – new cold-storage units', amountCr: 10.7 },
+    { label: 'Working capital', amountCr: 38 },
+    { label: 'General corporate purposes', amountCr: 7.5 },
+    { label: 'Issue-related expenses', amountCr: 3.45 },
+  ],
   strengths: [
     '10-year track record in Delhi NCR’s meat and seafood delivery market',
     'Owns its cold-chain logistics end-to-end, reducing dependence on third-party delivery',
@@ -61,16 +62,6 @@ const zappfresh: IpoDetail = {
     { name: 'Avanti Feeds', pe: 26 },
     { name: 'Godrej Agrovet', pe: 24 },
     { name: "Venky's India", pe: 14 },
-  ],
-  factReadPairs: [
-    {
-      fact: 'Revenue +45%, PAT +94% YoY',
-      read: 'Genuinely strong — growth and profitability improving together',
-    },
-    {
-      fact: 'Chicken = ~55% of revenue',
-      read: 'Worth weighing seriously before applying',
-    },
   ],
   sourcesChecked: ['DRHP / RHP', 'MCA filings', 'SEBI orders', 'Litigation records'],
   verifiedSourceCount: 4,
@@ -166,15 +157,10 @@ const orbitLogistics: IpoDetail = {
   name: 'Orbit Logistics Ltd',
   category: 'SME',
   oneLiner: 'Last-mile freight aggregation for D2C brands',
-  status: 'mixed-signals',
   isOpen: true,
   closesInDays: 1,
   minInvestment: 12036,
   logoUrl: '/orbit.png',
-  confidenceLabel: 'Mixed signals',
-  verdictHeadline: 'Fast top-line growth, thinner margins than peers',
-  verdictBody:
-    'Revenue is scaling quickly on the back of new client wins, but operating margin trails larger logistics peers and two key contracts are up for renewal within the year.',
   topFacts: [
     {
       tone: 'success',
@@ -196,6 +182,12 @@ const orbitLogistics: IpoDetail = {
     'Orbit earns a margin on every shipment by aggregating spare capacity from regional fleet partners and reselling it as a single delivery API to D2C and quick-commerce brands.',
   useOfProceeds:
     '₹6.2 Cr of the ₹28 Cr raised goes to working capital for fleet partner payouts, the remainder to a new sortation hub in Pune.',
+  useOfProceedsBreakdown: [
+    { label: 'Working capital – fleet partner payouts', amountCr: 6.2 },
+    { label: 'Capex – Pune sortation hub', amountCr: 19.3 },
+    { label: 'General corporate purposes', amountCr: 2 },
+    { label: 'Issue-related expenses', amountCr: 0.5 },
+  ],
   strengths: [
     'Asset-light model avoids heavy fleet capital expenditure',
     'API-based integration makes onboarding new D2C clients fast',
@@ -223,16 +215,6 @@ const orbitLogistics: IpoDetail = {
     { name: 'TCI Express', pe: 32 },
     { name: 'Blue Dart Express', pe: 52 },
     { name: 'VRL Logistics', pe: 18 },
-  ],
-  factReadPairs: [
-    {
-      fact: 'Revenue +38% YoY, operating margin below peer median',
-      read: 'Growth is real, but it is coming at a cost — worth checking if margin catches up before applying',
-    },
-    {
-      fact: 'Two clients = ~41% of revenue',
-      read: 'A single lost contract would leave a visible dent',
-    },
   ],
   sourcesChecked: ['DRHP / RHP', 'MCA filings', 'Litigation records'],
   verifiedSourceCount: 3,
@@ -329,15 +311,10 @@ const nimbusCloud: IpoDetail = {
   name: 'Nimbus Cloud Systems Ltd',
   category: 'Mainboard',
   oneLiner: 'Enterprise backup and disaster-recovery SaaS',
-  status: 'high-confidence',
   isOpen: true,
   closesInDays: 5,
   minInvestment: 28290,
   logoUrl: '/nimbus.png',
-  confidenceLabel: 'High confidence',
-  verdictHeadline: 'Profitable, diversified customer base, priced in line with peers',
-  verdictBody:
-    'A mature enterprise SaaS business with recurring revenue spread across 200+ clients and no single customer above 6% of revenue.',
   topFacts: [
     {
       tone: 'success',
@@ -359,6 +336,13 @@ const nimbusCloud: IpoDetail = {
     'Nimbus earns recurring subscription revenue by selling backup and disaster-recovery software to mid-size enterprises, billed annually under multi-year contracts.',
   useOfProceeds:
     '₹42 Cr of the ₹210 Cr raised goes to expanding the engineering team and a new data-residency region in the EU.',
+  useOfProceedsBreakdown: [
+    { label: 'Engineering team expansion', amountCr: 25 },
+    { label: 'Capex – EU data-residency region', amountCr: 17 },
+    { label: 'General corporate purposes', amountCr: 78 },
+    { label: 'Working capital', amountCr: 22 },
+    { label: 'Issue-related expenses', amountCr: 8 },
+  ],
   strengths: [
     'Net revenue retention of 118% shows expanding wallet share with existing customers',
     'No single customer contributes more than 6% of revenue, reducing concentration risk',
@@ -385,16 +369,6 @@ const nimbusCloud: IpoDetail = {
     { name: 'Commvault Systems', pe: 45 },
     { name: 'NetApp', pe: 25 },
     { name: 'Persistent Systems', pe: 44 },
-  ],
-  factReadPairs: [
-    {
-      fact: 'Net revenue retention of 118%, no client above 6% of revenue',
-      read: 'A genuinely diversified, sticky customer base — a reassuring combination',
-    },
-    {
-      fact: 'R&D spend down as a share of revenue',
-      read: 'Worth watching over the next few quarters, not yet a red flag',
-    },
   ],
   sourcesChecked: ['DRHP / RHP', 'MCA filings', 'SEBI orders'],
   verifiedSourceCount: 3,
@@ -491,14 +465,11 @@ const tridentPapers: IpoDetail = {
   name: 'Trident Papers Ltd',
   category: 'Mainboard',
   oneLiner: 'Industrial packaging paper manufacturing',
-  status: 'high-confidence',
+  logoUrl: '/Trident.png',
   isOpen: false,
   listedPrice: 389,
   listedChangePercent: 12.7,
-  confidenceLabel: 'High confidence',
-  verdictHeadline: 'Steady industrial packaging demand, now trading above issue price',
-  verdictBody:
-    'A mainboard packaging paper manufacturer that priced conservatively and has held its gains since listing, with export demand adding a second growth lever beyond the domestic market.',
+  listedDaysAgo: 42,
   topFacts: [
     {
       tone: 'success',
@@ -520,6 +491,11 @@ const tridentPapers: IpoDetail = {
     'Trident Papers earns revenue by manufacturing and selling industrial-grade kraft paper and corrugated packaging board to FMCG, e-commerce, and export customers from two integrated pulp-and-paper mills.',
   useOfProceeds:
     '₹85 Cr of the ₹140 Cr raised funded a new paper machine at the Gujarat facility; the remainder repaid working capital debt.',
+  useOfProceedsBreakdown: [
+    { label: 'Capex – new paper machine (Gujarat)', amountCr: 68 },
+    { label: 'General corporate purposes', amountCr: 12 },
+    { label: 'Issue-related expenses', amountCr: 5 },
+  ],
   strengths: [
     'Two integrated mills reduce dependence on external pulp suppliers',
     'Export order book adds a second demand channel beyond the domestic market',
@@ -547,16 +523,6 @@ const tridentPapers: IpoDetail = {
     { name: 'JK Paper', pe: 24 },
     { name: 'Emami Paper Mills', pe: 18 },
     { name: 'Andhra Paper', pe: 11 },
-  ],
-  factReadPairs: [
-    {
-      fact: 'Revenue +22%, EBITDA margin +140 bps YoY',
-      read: 'A genuine operating improvement, not just top-line growth',
-    },
-    {
-      fact: 'Pulp costs ~60% of raw material spend',
-      read: 'Margin is exposed to import pulp price swings — worth checking each quarter',
-    },
   ],
   sourcesChecked: ['DRHP / RHP', 'MCA filings', 'Litigation records', 'Exchange filings'],
   verifiedSourceCount: 4,
@@ -674,11 +640,331 @@ const tridentPapers: IpoDetail = {
   },
 }
 
+const vantageDairies: IpoDetail = {
+  slug: 'vantage-dairies',
+  name: 'Vantage Dairies Ltd',
+  category: 'SME',
+  oneLiner: 'Packaged dairy and value-added milk products',
+  logoUrl: '/vantage.png',
+  isOpen: true,
+  closesInDays: 4,
+  minInvestment: 11920,
+  topFacts: [
+    {
+      tone: 'success',
+      text: 'Revenue up 31%, profit up 52% year on year',
+      source: 'Verified against DRHP + MCA filing',
+    },
+    {
+      tone: 'warning',
+      text: 'Raw milk procurement is ~68% of revenue',
+      source: 'From DRHP, margin exposure',
+    },
+    {
+      tone: 'warning',
+      text: 'Over 70% of sales concentrated in Maharashtra and Gujarat',
+      source: 'From DRHP, concentration risk',
+    },
+  ],
+  howTheyMakeMoney:
+    'Vantage Dairies sells packaged milk, curd, paneer, and ghee to retail and quick-commerce channels, sourcing raw milk from a contracted network of dairy farmers across Maharashtra and Gujarat.',
+  useOfProceeds: '₹26 Cr of the ₹42 Cr raised goes to a new milk processing plant in Nashik.',
+  useOfProceedsBreakdown: [
+    { label: 'Capex – new processing plant (Nashik)', amountCr: 26 },
+    { label: 'Working capital', amountCr: 10 },
+    { label: 'General corporate purposes', amountCr: 4 },
+    { label: 'Issue-related expenses', amountCr: 2 },
+  ],
+  strengths: [
+    'Contracted farmer-sourcing network reduces dependence on open-market milk procurement',
+    'Diversified product mix across milk, curd, paneer, and ghee reduces reliance on any single SKU',
+    'Cold-chain distribution network supports same-day delivery across key metros',
+    'Revenue and profit have grown together for three consecutive years',
+  ],
+  risks: [
+    { rank: 1, text: 'Raw milk costs ~68% of revenue, exposed to seasonal and monsoon-driven price swings' },
+    { rank: 2, text: 'Sales concentrated in Maharashtra and Gujarat, regional demand risk' },
+    { rank: 3, text: 'Perishable inventory increases wastage and spoilage risk' },
+    { rank: 4, text: 'Competitive category with both organized and unorganized dairy players' },
+  ],
+  promoter: {
+    name: 'Suresh Patil',
+    holdingPct: 58,
+    context: 'Founder, retains control post-listing',
+    preIssuePct: 64,
+    postIssuePct: 58,
+    background: '20 years in dairy cooperative operations before founding Vantage Dairies in 2011',
+  },
+  peers: [
+    { name: 'Vantage Dairies', pe: 13, isSubject: true },
+    { name: 'Hatsun Agro Product', pe: 38 },
+    { name: 'Heritage Foods', pe: 22 },
+    { name: 'Parag Milk Foods', pe: 19 },
+  ],
+  sourcesChecked: ['DRHP / RHP', 'MCA filings', 'Litigation records'],
+  verifiedSourceCount: 3,
+  sampleChat: [
+    { role: 'user', text: 'Why is raw milk cost so high?' },
+    {
+      role: 'assistant',
+      text: "Raw milk is the single largest input cost for any dairy processor, and the DRHP shows Vantage sources it from contracted farmers rather than owning cattle directly — so procurement is exposed to seasonal supply and price swings, especially during summer months when milk yield drops.",
+      source: 'source: DRHP p.44',
+    },
+  ],
+  illustrative: true,
+  leadManager: {
+    name: 'GYR Capital Advisors',
+    totalIssues: 10,
+    belowIssuePriceCount: 1,
+  },
+  fullReport: {
+    issueMechanics: {
+      issueType: 'Fresh issue only',
+      freshIssueCr: 42,
+      offerForSaleCr: 0,
+      priceBand: '₹145 – ₹149 per share',
+      faceValue: 10,
+      lotSize: 80,
+      totalIssueSizeCr: 42,
+    },
+    applicationTiers: [
+      { category: 'Retail', lotsMin: 1, sharesMin: 80, amountMin: 11920, reservationPct: 35 },
+      { category: 'S-HNI', lotsMin: 14, sharesMin: 1120, amountMin: 166880, reservationPct: 15 },
+      { category: 'B-HNI', lotsMin: 68, sharesMin: 5440, amountMin: 810560, reservationPct: 50 },
+    ],
+    allocation: [
+      { category: 'QIB', reservationPct: 50, subscriptionTimesX: 2.1 },
+      { category: 'NII (HNI)', reservationPct: 15, subscriptionTimesX: 2.8 },
+      { category: 'Retail', reservationPct: 35, subscriptionTimesX: 1.6 },
+    ],
+    anchor: {
+      allottedCr: 12.6,
+      lockInNote: '50% of anchor shares locked in for 30 days, remainder for 90 days from allotment',
+      marqueeInvestors: ['Quant Small Cap Fund', 'Sundaram Mutual Fund', 'Bandhan AMC'],
+    },
+    capitalHistory: [
+      { date: 'Jun 2011', event: 'Initial subscription on incorporation', shares: 40_000, pricePerShare: 10 },
+      { date: 'Aug 2020', event: 'Series A allotment', shares: 150_000, pricePerShare: 95 },
+      { date: 'Feb 2025', event: 'Pre-IPO placement', shares: 48_000, pricePerShare: 128 },
+    ],
+    financials: [
+      { period: 'FY23', revenueCr: 145, ebitdaCr: 11.5, patCr: 4.3, netWorthCr: 26, borrowingsCr: 20 },
+      { period: 'FY24', revenueCr: 172, ebitdaCr: 14.8, patCr: 5.9, netWorthCr: 33, borrowingsCr: 23 },
+      { period: 'FY25', revenueCr: 226, ebitdaCr: 20, patCr: 9, netWorthCr: 44, borrowingsCr: 27 },
+    ],
+    valuationRatios: {
+      roePct: 20.5,
+      rocePct: 23,
+      ebitdaMarginPct: 8.8,
+      patMarginPct: 4,
+      debtToEquity: 0.61,
+      epsPreIssue: 13.6,
+      epsPostIssue: 11.9,
+      peBasedOnPreIssueEps: 11,
+      peBasedOnPostIssueEps: 13,
+      ronwPct: 20.5,
+      navPerShare: 58,
+      priceToBookValue: 2.6,
+    },
+    extendedPeers: [
+      { name: 'Vantage Dairies', revenueCr: 226, revenueGrowthPct: 31, patMarginPct: 4, ronwPct: 20.5, pe: 13, isSubject: true },
+      { name: 'Hatsun Agro Product', revenueCr: 9200, revenueGrowthPct: 9, patMarginPct: 5.8, ronwPct: 16.4, pe: 38 },
+      { name: 'Heritage Foods', revenueCr: 3400, revenueGrowthPct: 7, patMarginPct: 3.9, ronwPct: 13.2, pe: 22 },
+      { name: 'Parag Milk Foods', revenueCr: 2650, revenueGrowthPct: 11, patMarginPct: 3.1, ronwPct: 11.8, pe: 19 },
+    ],
+    registrar: { name: 'Cameo Corporate Services Ltd' },
+    contingentLiabilities: [
+      { description: 'Disputed VAT demand (FY21)', amountCr: 1.2 },
+      { description: 'Bank guarantees to milk cooperative societies', amountCr: 0.8 },
+    ],
+    borrowings: [
+      { lender: 'State Bank of India', facilityType: 'Term loan (processing plant capex)', outstandingCr: 18 },
+      { lender: 'Punjab National Bank', facilityType: 'Working capital / cash credit', outstandingCr: 9 },
+    ],
+    sourceLinks: [
+      { label: 'DRHP / RHP', note: 'Filed with SEBI and the stock exchanges' },
+      { label: 'SEBI', note: 'Regulatory filings and observation letter' },
+      { label: 'NSE / BSE', note: 'Exchange listing and disclosure pages' },
+      { label: 'MCA', note: 'Registrar of Companies filings' },
+      { label: 'Registrar portal', note: 'Allotment status and application tracking' },
+    ],
+  },
+}
+
+const solaceWellness: IpoDetail = {
+  slug: 'solace-wellness',
+  name: 'Solace Wellness Ltd',
+  category: 'Mainboard',
+  oneLiner: 'Ayurvedic and wellness consumer products',
+  logoUrl: '/Solace.png',
+  isOpen: false,
+  listedPrice: 245,
+  listedChangePercent: 5.2,
+  listedDaysAgo: 10,
+  topFacts: [
+    {
+      tone: 'success',
+      text: 'Revenue up 26%, profit up 35% year on year',
+      source: 'Verified against DRHP + MCA filing',
+    },
+    {
+      tone: 'success',
+      text: 'Direct-to-consumer channel now ~22% of revenue, up from 9%',
+      source: 'From DRHP',
+    },
+    {
+      tone: 'warning',
+      text: 'Advertising spend rose faster than revenue this year',
+      source: 'From DRHP',
+    },
+  ],
+  howTheyMakeMoney:
+    'Solace Wellness manufactures and sells ayurvedic personal care, nutraceutical, and wellness products through general trade, modern retail, and e-commerce channels.',
+  useOfProceeds: '₹55 Cr of the ₹95 Cr raised goes to a new manufacturing unit in Baddi, Himachal Pradesh.',
+  useOfProceedsBreakdown: [
+    { label: 'Capex – new manufacturing unit (Baddi, HP)', amountCr: 55 },
+    { label: 'Brand & marketing expansion', amountCr: 20 },
+    { label: 'General corporate purposes', amountCr: 15 },
+    { label: 'Issue-related expenses', amountCr: 5 },
+  ],
+  strengths: [
+    'Established ayurvedic brand with two decades of consumer trust',
+    'Direct-to-consumer channel growing faster than overall revenue, improving margins',
+    'Backward-integrated manufacturing reduces third-party contract-manufacturing dependence',
+    'Diversified portfolio across personal care, nutraceuticals, and wellness categories',
+    'Revenue and profit have grown together for three consecutive years',
+  ],
+  risks: [
+    { rank: 1, text: 'Advertising and brand-building spend rising faster than revenue' },
+    { rank: 2, text: 'Ayurvedic category faces increasing competition from larger FMCG entrants' },
+    { rank: 3, text: 'Raw material sourcing depends on seasonal agricultural inputs' },
+    { rank: 4, text: 'Regulatory scrutiny on ayurvedic product claims and labeling' },
+  ],
+  promoter: {
+    name: 'Meera Krishnan',
+    holdingPct: 51,
+    context: 'Founder, retains control post-listing',
+    preIssuePct: 58,
+    postIssuePct: 52,
+    currentHoldingPct: 51,
+    background: '18 years building ayurvedic product lines before founding Solace Wellness in 2007',
+  },
+  peers: [
+    { name: 'Solace Wellness', pe: 24, isSubject: true },
+    { name: 'Dabur India', pe: 45 },
+    { name: 'Emami Ltd', pe: 32 },
+    { name: 'Zydus Wellness', pe: 28 },
+  ],
+  sourcesChecked: ['DRHP / RHP', 'MCA filings', 'SEBI orders', 'Exchange filings'],
+  verifiedSourceCount: 4,
+  sampleChat: [
+    { role: 'user', text: 'Why did advertising spend rise faster than revenue?' },
+    {
+      role: 'assistant',
+      text: "The company's post-IPO disclosures attribute this to a national ad campaign launched ahead of festive season demand. It's a near-term margin drag flagged in the filing, not described as a structural issue.",
+      source: 'source: DRHP p.58',
+    },
+  ],
+  illustrative: true,
+  leadManager: {
+    name: 'Equirus Capital',
+    totalIssues: 16,
+    belowIssuePriceCount: 3,
+  },
+  fullReport: {
+    issueMechanics: {
+      issueType: 'Fresh issue + Offer for sale',
+      freshIssueCr: 95,
+      offerForSaleCr: 40,
+      priceBand: '₹228 – ₹233 per share',
+      faceValue: 5,
+      lotSize: 64,
+      totalIssueSizeCr: 135,
+    },
+    applicationTiers: [
+      { category: 'Retail', lotsMin: 1, sharesMin: 64, amountMin: 14912, reservationPct: 35 },
+      { category: 'S-HNI', lotsMin: 14, sharesMin: 896, amountMin: 208768, reservationPct: 15 },
+      { category: 'B-HNI', lotsMin: 68, sharesMin: 4352, amountMin: 1014016, reservationPct: 50 },
+    ],
+    allocation: [
+      { category: 'QIB', reservationPct: 50, subscriptionTimesX: 3.4 },
+      { category: 'NII (HNI)', reservationPct: 15, subscriptionTimesX: 2.6 },
+      { category: 'Retail', reservationPct: 35, subscriptionTimesX: 1.9 },
+    ],
+    anchor: {
+      allottedCr: 28.5,
+      lockInNote: '50% of anchor shares locked in for 30 days, remainder for 90 days from allotment',
+      marqueeInvestors: ['Nippon India Growth Fund', 'Mirae Asset Mutual Fund', 'Abu Dhabi Investment Authority'],
+    },
+    capitalHistory: [
+      { date: 'Mar 2007', event: 'Initial subscription on incorporation', shares: 100_000, pricePerShare: 5 },
+      { date: 'Oct 2017', event: 'Series B allotment', shares: 280_000, pricePerShare: 145 },
+      { date: 'Jan 2025', event: 'Pre-IPO placement', shares: 62_000, pricePerShare: 205 },
+    ],
+    financials: [
+      { period: 'FY23', revenueCr: 310, ebitdaCr: 52, patCr: 28, netWorthCr: 190, borrowingsCr: 35 },
+      { period: 'FY24', revenueCr: 360, ebitdaCr: 64, patCr: 35, netWorthCr: 224, borrowingsCr: 30 },
+      { period: 'FY25', revenueCr: 454, ebitdaCr: 86, patCr: 47, netWorthCr: 268, borrowingsCr: 24 },
+    ],
+    valuationRatios: {
+      roePct: 17.5,
+      rocePct: 19.8,
+      ebitdaMarginPct: 18.9,
+      patMarginPct: 10.4,
+      debtToEquity: 0.09,
+      epsPreIssue: 10.6,
+      epsPostIssue: 9.7,
+      peBasedOnPreIssueEps: 22,
+      peBasedOnPostIssueEps: 24,
+      ronwPct: 17.5,
+      navPerShare: 92,
+      priceToBookValue: 2.5,
+    },
+    extendedPeers: [
+      { name: 'Solace Wellness', revenueCr: 454, revenueGrowthPct: 26, patMarginPct: 10.4, ronwPct: 17.5, pe: 24, isSubject: true },
+      { name: 'Dabur India', revenueCr: 11200, revenueGrowthPct: 7, patMarginPct: 15.2, ronwPct: 19.8, pe: 45 },
+      { name: 'Emami Ltd', revenueCr: 3700, revenueGrowthPct: 6, patMarginPct: 18.4, ronwPct: 24.1, pe: 32 },
+      { name: 'Zydus Wellness', revenueCr: 1950, revenueGrowthPct: 9, patMarginPct: 11.6, ronwPct: 13.4, pe: 28 },
+    ],
+    registrar: { name: 'MUFG Intime India Pvt Ltd' },
+    contingentLiabilities: [
+      { description: 'Disputed income tax demand (AY 2022-23)', amountCr: 3.4 },
+      { description: 'Corporate guarantee for subsidiary credit facility', amountCr: 2.1 },
+    ],
+    borrowings: [
+      { lender: 'HDFC Bank', facilityType: 'Working capital / cash credit', outstandingCr: 14 },
+      { lender: 'Axis Bank', facilityType: 'Term loan (Baddi manufacturing unit)', outstandingCr: 10 },
+    ],
+    sourceLinks: [
+      { label: 'DRHP / RHP', note: 'Filed with SEBI and the stock exchanges' },
+      { label: 'SEBI', note: 'Regulatory filings and observation letter' },
+      { label: 'NSE / BSE', note: 'Exchange listing and disclosure pages' },
+      { label: 'MCA', note: 'Registrar of Companies filings' },
+      { label: 'Registrar portal', note: 'Allotment status and application tracking' },
+    ],
+  },
+  postListing: {
+    updates: [
+      {
+        daysAgo: 6,
+        type: 'earnings',
+        title: 'Q1 FY27 results announced',
+        detail: 'Revenue grew 19% YoY to ₹128 Cr; EBITDA margin expanded 40 bps on DTC channel mix.',
+      },
+    ],
+    insiderActivity: [
+      { daysAgo: 8, type: 'block-deal', description: 'Promoter group sold 0.6% stake via block deal on NSE' },
+    ],
+  },
+}
+
 export const ipoDetails: Record<string, IpoDetail> = {
   zappfresh,
   'orbit-logistics': orbitLogistics,
   'nimbus-cloud': nimbusCloud,
   'trident-papers': tridentPapers,
+  'vantage-dairies': vantageDairies,
+  'solace-wellness': solaceWellness,
 }
 
 export const ipoSummaries: IpoSummary[] = [
@@ -690,29 +976,26 @@ export const ipoSummaries: IpoSummary[] = [
     name: 'Kaveri Agro Foods Ltd',
     category: 'SME',
     oneLiner: 'Packaged spices and dry-goods distribution',
-    status: 'closed',
     isOpen: false,
   },
   tridentPapers,
+  vantageDairies,
+  solaceWellness,
 ]
 
 function genericIpoDetail(summary: IpoSummary): IpoDetail {
   return {
     ...summary,
-    confidenceLabel: 'Limited data',
-    verdictHeadline: 'Detailed verification not yet available for this IPO',
-    verdictBody:
-      'This prototype only includes deep, sourced verification for a small sample of IPOs. The fields below are placeholders to demonstrate the layout.',
     topFacts: [
       { tone: 'warning', text: 'Detailed facts not yet verified for this IPO', source: 'Sample placeholder' },
     ],
     howTheyMakeMoney: 'Business model detail not included in this prototype sample.',
     useOfProceeds: 'Use of proceeds detail not included in this prototype sample.',
+    useOfProceedsBreakdown: [],
     strengths: [],
     risks: [{ rank: 1, text: 'Risk detail not included in this prototype sample' }],
     promoter: { name: 'Not available', holdingPct: 0, context: 'Not included in this prototype sample' },
     peers: [{ name: summary.name, pe: 0, isSubject: true }],
-    factReadPairs: [],
     sourcesChecked: [],
     verifiedSourceCount: 0,
     sampleChat: [],
@@ -725,10 +1008,3 @@ export function getIpoDetail(slug: string): IpoDetail | undefined {
   const summary = ipoSummaries.find((ipo) => ipo.slug === slug)
   return summary ? genericIpoDetail(summary) : undefined
 }
-
-export const applicationHistory: ApplicationRecord[] = [
-  { companyName: 'Zappfresh (DSM Fresh Foods)', status: 'applied', date: '28 Jun 2026' },
-  { companyName: 'Nimbus Cloud Systems', status: 'allotted', date: '02 May 2026' },
-  { companyName: 'Kaveri Agro Foods', status: 'not-allotted', date: '14 Mar 2026' },
-  { companyName: 'Trident Papers', status: 'refunded', date: '09 Feb 2026' },
-]

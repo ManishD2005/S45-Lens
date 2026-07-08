@@ -5,12 +5,25 @@ import { useAppState } from '../lib/appState'
 import { IpoCard } from '../components/IpoCard'
 import { SearchSuggestions } from '../components/SearchSuggestions'
 import { IconSearch } from '../components/icons'
+import { isIpoListed } from '../lib/ipoFormat'
+import { getIpoListedDate, getIpoRelevantOpenDate } from '../lib/ipoEvents'
+
+type LifecycleFilter = 'all' | 'open-upcoming' | 'recently-listed'
+
+const FILTER_CHIPS: { value: LifecycleFilter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'open-upcoming', label: 'Open & upcoming' },
+  { value: 'recently-listed', label: 'Recently listed' },
+]
 
 export function SearchResults() {
   const navigate = useNavigate()
   const { addRecentSearch } = useAppState()
   const [params, setParams] = useSearchParams()
   const query = params.get('q')?.trim() ?? ''
+  const filterParam = params.get('filter')
+  const filter: LifecycleFilter =
+    filterParam === 'open-upcoming' || filterParam === 'recently-listed' ? filterParam : 'all'
   const [input, setInput] = useState(query)
 
   useEffect(() => {
@@ -21,7 +34,17 @@ export function SearchResults() {
 
   function runSearch(term: string) {
     setInput(term)
-    setParams(term.trim() ? { q: term.trim() } : {})
+    const next: Record<string, string> = {}
+    if (term.trim()) next.q = term.trim()
+    if (filter !== 'all') next.filter = filter
+    setParams(next)
+  }
+
+  function setFilter(next: LifecycleFilter) {
+    const nextParams: Record<string, string> = {}
+    if (query) nextParams.q = query
+    if (next !== 'all') nextParams.filter = next
+    setParams(nextParams)
   }
 
   function handleSubmit(e: FormEvent) {
@@ -34,16 +57,38 @@ export function SearchResults() {
     navigate(`/ipo/${slug}`)
   }
 
+  const showResults = Boolean(query) || filter !== 'all'
+
   const results = useMemo(() => {
-    if (!query) return []
-    const q = query.toLowerCase()
-    return ipoSummaries.filter(
-      (ipo) =>
-        ipo.name.toLowerCase().includes(q) ||
-        ipo.category.toLowerCase().includes(q) ||
-        ipo.oneLiner.toLowerCase().includes(q),
-    )
-  }, [query])
+    let base = ipoSummaries
+    if (query) {
+      const q = query.toLowerCase()
+      base = base.filter(
+        (ipo) =>
+          ipo.name.toLowerCase().includes(q) ||
+          ipo.category.toLowerCase().includes(q) ||
+          ipo.oneLiner.toLowerCase().includes(q),
+      )
+    }
+
+    if (filter === 'open-upcoming') {
+      return base
+        .filter((ipo) => ipo.isOpen)
+        .map((ipo) => ({ ipo, date: getIpoRelevantOpenDate(ipo) }))
+        .sort((a, b) => (a.date?.getTime() ?? Infinity) - (b.date?.getTime() ?? Infinity))
+        .map((entry) => entry.ipo)
+    }
+
+    if (filter === 'recently-listed') {
+      return base
+        .filter((ipo) => isIpoListed(ipo))
+        .map((ipo) => ({ ipo, date: getIpoListedDate(ipo) }))
+        .sort((a, b) => (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0))
+        .map((entry) => entry.ipo)
+    }
+
+    return base
+  }, [query, filter])
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-8">
@@ -62,38 +107,51 @@ export function SearchResults() {
         </div>
       </form>
 
-      {query ? (
+      <div className="mb-6 flex flex-wrap gap-2">
+        {FILTER_CHIPS.map((chip) => (
+          <button
+            key={chip.value}
+            type="button"
+            onClick={() => setFilter(chip.value)}
+            aria-pressed={filter === chip.value}
+            className={`rounded-pill border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+              filter === chip.value
+                ? 'border-line bg-surface-sunken text-ink'
+                : 'border-line text-ink-muted hover:text-ink'
+            }`}
+          >
+            {chip.label}
+          </button>
+        ))}
+      </div>
+
+      {showResults ? (
         <>
           <p className="anim-fade-up mb-6 text-sm text-ink-muted" aria-live="polite">
-            {results.length} {results.length === 1 ? 'result' : 'results'} for &ldquo;{query}&rdquo;
+            {results.length} {results.length === 1 ? 'result' : 'results'}
+            {query && (
+              <>
+                {' '}
+                for &ldquo;{query}&rdquo;
+              </>
+            )}
           </p>
           {results.length === 0 ? (
             <div className="rounded-card border border-line bg-surface-sunken px-5 py-12 text-center">
-              <p className="text-sm text-ink-muted">No IPOs match &ldquo;{query}&rdquo;.</p>
-              <p className="mt-2 text-xs text-ink-faint">Try a company name — like Zappfresh, Orbit, or Nimbus.</p>
+              <p className="text-sm text-ink-muted">
+                {query ? <>No IPOs match &ldquo;{query}&rdquo;.</> : 'No IPOs match this filter right now.'}
+              </p>
+              {query && (
+                <p className="mt-2 text-xs text-ink-faint">Try a company name — like Zappfresh, Orbit, or Nimbus.</p>
+              )}
             </div>
           ) : (
-            <div className="space-y-3">
-              {results.map((ipo, i) =>
-                ipo.status === 'closed' ? (
-                  <div
-                    key={ipo.slug}
-                    className="anim-fade-up flex items-center justify-between rounded-card border border-line bg-surface px-5 py-4 opacity-55"
-                    style={{ animationDelay: `${i * 40}ms` }}
-                  >
-                    <div>
-                      <p className="label-caps text-ink-faint">{ipo.category}</p>
-                      <p className="mt-1 font-serif text-base text-ink">{ipo.name}</p>
-                      <p className="mt-1 text-sm text-ink-muted">{ipo.oneLiner}</p>
-                    </div>
-                    <span className="label-caps rounded-pill bg-surface-sunken px-2.5 py-1 text-ink-faint">Closed</span>
-                  </div>
-                ) : (
-                  <div key={ipo.slug} className="anim-fade-up" style={{ animationDelay: `${i * 40}ms` }}>
-                    <IpoCard ipo={ipo} />
-                  </div>
-                ),
-              )}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {results.map((ipo, i) => (
+                <div key={ipo.slug} className="anim-fade-up" style={{ animationDelay: `${i * 40}ms` }}>
+                  <IpoCard ipo={ipo} />
+                </div>
+              ))}
             </div>
           )}
         </>

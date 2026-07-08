@@ -61,7 +61,7 @@ function buildFaqs(ipo: IpoDetail, report: FullReportData): { question: string; 
 function Section({ title, children, sourceLabel }: { title: string; children: ReactNode; sourceLabel?: string }) {
   return (
     <section>
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between">
         <p className="text-xl font-semibold text-heading">{title}</p>
         <PhaseTag variant="fact" label={sourceLabel} />
       </div>
@@ -145,6 +145,15 @@ export function FullReportTab({ ipo }: { ipo: IpoDetail }) {
           ]}
         />
       </Section>
+
+      {ipo.useOfProceedsBreakdown.length > 0 && (
+        <Section title="Use of proceeds breakdown">
+          <DataTable
+            head={['Bucket', 'Amount']}
+            rows={ipo.useOfProceedsBreakdown.map((b) => [b.label, formatCr(b.amountCr)])}
+          />
+        </Section>
+      )}
 
       <Section title="Full timeline">
         {timeline ? (

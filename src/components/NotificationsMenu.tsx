@@ -1,18 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { applicationHistory, ipoSummaries } from '../data/ipos'
-import { IconBell } from './icons'
-
-const STATUS_COPY: Record<string, string> = {
-  applied: 'application was received',
-  allotted: 'application was allotted',
-  'not-allotted': 'application was not allotted',
-  refunded: 'application was refunded',
-}
+import { ipoSummaries } from '../data/ipos'
+import { BellIcon } from '@heroicons/react/24/solid'
 
 export function NotificationsMenu() {
   const [open, setOpen] = useState(false)
+  const [supportsHover, setSupportsHover] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setSupportsHover(window.matchMedia('(hover: hover)').matches)
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -33,68 +31,56 @@ export function NotificationsMenu() {
   const closingSoon = ipoSummaries
     .filter((ipo) => ipo.isOpen && typeof ipo.closesInDays === 'number')
     .sort((a, b) => (a.closesInDays ?? 99) - (b.closesInDays ?? 99))[0]
-  const latestApplication = applicationHistory[0]
 
-  const hasNotifications = Boolean(closingSoon || latestApplication)
+  const hasNotifications = Boolean(closingSoon)
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => supportsHover && setOpen(true)}
+      onMouseLeave={() => supportsHover && setOpen(false)}
+    >
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label="Notifications"
         aria-expanded={open}
-        className={`hidden h-11 w-11 items-center justify-center rounded-full transition-colors sm:flex ${
-          open ? 'bg-accent-soft text-primary' : 'bg-surface-sunken text-ink-muted hover:bg-accent-soft hover:text-primary'
+        className={`hidden h-11 w-11 items-center justify-center rounded-full text-white transition-colors sm:flex ${
+          open ? 'bg-accent/30' : 'bg-accent/15 hover:bg-accent/25'
         }`}
       >
-        <IconBell width={18} height={18} />
+        <BellIcon width={18} height={18} />
       </button>
 
       {open && (
         <div
           role="menu"
-          className="anim-fade-up absolute right-0 top-11 z-40 w-80 overflow-hidden rounded-card border border-line bg-surface shadow-xl"
+          className="anim-fade-up absolute right-0 top-12 z-40 w-80 overflow-hidden rounded-card border border-white/10 bg-[#073835] shadow-xl"
         >
-          <div className="border-b border-line px-4 py-3">
-            <p className="text-sm font-semibold text-ink">Notifications</p>
+          <div className="border-b border-white/10 px-4 py-3">
+            <p className="text-sm font-semibold text-white">Notifications</p>
           </div>
 
           {hasNotifications ? (
-            <div className="divide-y divide-line">
+            <div className="divide-y divide-white/10">
               {closingSoon && (
                 <Link
                   to={`/ipo/${closingSoon.slug}`}
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-3 text-left transition-colors hover:bg-surface-sunken"
+                  className="block px-4 py-3 text-left transition-colors hover:bg-white/5"
                 >
-                  <p className="text-sm text-ink">
+                  <p className="text-sm text-white">
                     {closingSoon.name.split(' (')[0]}{' '}
                     {closingSoon.closesInDays === 1 ? 'closes tomorrow' : `closes in ${closingSoon.closesInDays} days`}
                   </p>
-                  <p className="mt-0.5 text-xs text-ink-faint">Closing reminder</p>
+                  <p className="mt-0.5 text-xs text-white/50">Closing reminder</p>
                 </Link>
-              )}
-              {latestApplication && (
-                <div className="px-4 py-3">
-                  <p className="text-sm text-ink">
-                    {latestApplication.companyName}: your {STATUS_COPY[latestApplication.status]}
-                  </p>
-                  <p className="mt-0.5 text-xs text-ink-faint">{latestApplication.date}</p>
-                </div>
               )}
             </div>
           ) : (
-            <p className="px-4 py-8 text-center text-sm text-ink-muted">No notifications yet.</p>
+            <p className="px-4 py-8 text-center text-sm text-white/60">No notifications yet.</p>
           )}
-
-          <Link
-            to="/profile"
-            onClick={() => setOpen(false)}
-            className="block border-t border-line px-4 py-2.5 text-center text-xs font-medium text-primary hover:underline"
-          >
-            Notification preferences
-          </Link>
         </div>
       )}
     </div>

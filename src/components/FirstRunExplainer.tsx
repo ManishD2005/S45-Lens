@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useAppState } from '../lib/appState'
-import { IconCheckCircle } from './icons'
+import { IconCheckCircle, IconInfo } from './icons'
 
 function MiniFactCard() {
   return (
@@ -33,14 +33,14 @@ const STEPS: { title: string; body: string; visual: ReactNode }[] = [
   },
   {
     title: 'Every fact is sourced',
-    body: 'No blanket disclaimers. Each claim is tagged with where it came from — DRHP, MCA filing, SEBI order — and how many sources verified it.',
+    body: "No blanket disclaimers. Every claim is tagged with where it came from — DRHP, MCA filing, SEBI order. Tap the (i) on any fact to see it.",
     visual: (
-      <div className="flex items-start gap-3 rounded-md border border-line bg-surface px-3.5 py-2.5 text-left">
-        <IconCheckCircle width={16} height={16} className="mt-0.5 shrink-0 text-primary" />
-        <div>
-          <p className="text-xs text-ink">Revenue up 45%, profit up 94% year on year</p>
-          <p className="label-caps mt-1 text-ink-faint normal-case tracking-normal">verified against DRHP + MCA filing</p>
-        </div>
+      <div className="flex items-center gap-3 rounded-md border border-line bg-surface px-3.5 py-2.5 text-left">
+        <IconCheckCircle width={16} height={16} className="shrink-0 text-primary" />
+        <p className="flex-1 text-xs text-ink">Revenue up 45%, profit up 94% year on year</p>
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-faint">
+          <IconInfo width={14} height={14} />
+        </span>
       </div>
     ),
   },

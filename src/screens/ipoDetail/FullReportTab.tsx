@@ -71,10 +71,16 @@ function Section({ title, children, sourceLabel }: { title: string; children: Re
 }
 
 function KeyValueGrid({ items }: { items: { label: string; value: string }[] }) {
+  const isDanglingLast = items.length % 2 === 1
   return (
     <div className="grid grid-cols-1 gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2">
-      {items.map((item) => (
-        <div key={item.label} className="flex items-center justify-between gap-4 bg-surface px-4 py-3">
+      {items.map((item, i) => (
+        <div
+          key={item.label}
+          className={`flex items-center justify-between gap-4 bg-surface px-4 py-3 ${
+            isDanglingLast && i === items.length - 1 ? 'sm:col-span-2' : ''
+          }`}
+        >
           <span className="text-sm text-ink-muted">{item.label}</span>
           <span className="text-sm font-medium text-ink">{item.value}</span>
         </div>

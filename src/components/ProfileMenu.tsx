@@ -5,6 +5,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   BellIcon,
   BookmarkIcon,
+  ChevronDownIcon,
   ChevronRightIcon,
   UserIcon,
 } from '@heroicons/react/24/solid'
@@ -106,10 +107,10 @@ export function ProfileMenu() {
                 >
                   <row.icon width={18} height={18} className="shrink-0 text-white/70" />
                   <span className="flex-1 text-sm font-medium text-white">{row.label}</span>
-                  <ChevronRightIcon
+                  <ChevronDownIcon
                     width={16}
                     height={16}
-                    className={`shrink-0 text-white/40 transition-transform ${openRow === row.label ? 'rotate-90' : ''}`}
+                    className={`shrink-0 text-white/40 transition-transform ${openRow === row.label ? 'rotate-180' : ''}`}
                   />
                 </button>
                 {openRow === row.label && (

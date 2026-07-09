@@ -14,7 +14,7 @@ export function SearchSuggestions({
   onPickIpo: (slug: string, name: string) => void
 }) {
   const { recentSearches, clearRecentSearches } = useAppState()
-  const trending = ipoSummaries.filter((ipo) => ipo.isOpen)
+  const openIpos = ipoSummaries.filter((ipo) => ipo.isOpen)
 
   return (
     <div>
@@ -42,9 +42,9 @@ export function SearchSuggestions({
       )}
 
       <div>
-        <p className="mb-3 text-sm font-semibold text-ink">Trending IPOs</p>
+        <p className="mb-3 text-sm font-semibold text-ink">Open IPOs</p>
         <div className="flex flex-wrap gap-2">
-          {trending.map((ipo) => (
+          {openIpos.map((ipo) => (
             <button
               key={ipo.slug}
               type="button"

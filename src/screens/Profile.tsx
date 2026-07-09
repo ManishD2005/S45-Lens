@@ -10,7 +10,7 @@ import type { IpoLifecycleStatus, IpoSummary } from '../types'
 import {
   ArrowRightStartOnRectangleIcon,
   BellIcon,
-  ChevronRightIcon,
+  ChevronDownIcon,
   CurrencyRupeeIcon,
   DocumentTextIcon,
   UserIcon,
@@ -168,10 +168,10 @@ function AccountSection() {
               >
                 <row.icon width={18} height={18} className="shrink-0 text-ink-muted" />
                 <span className="flex-1 text-sm font-medium text-ink">{row.label}</span>
-                <ChevronRightIcon
+                <ChevronDownIcon
                   width={16}
                   height={16}
-                  className={`shrink-0 text-ink-faint transition-transform ${openRow === row.label ? 'rotate-90' : ''}`}
+                  className={`shrink-0 text-ink-faint transition-transform ${openRow === row.label ? 'rotate-180' : ''}`}
                 />
               </button>
               {openRow === row.label && (

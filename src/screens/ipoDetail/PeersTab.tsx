@@ -150,8 +150,9 @@ export function PeersTab({ ipo }: { ipo: IpoDetail }) {
       )}
 
       {summary && (
-        <div className="rounded-card border border-line bg-surface px-4 py-3.5">
+        <div className="flex items-start justify-between gap-3 rounded-card border border-line bg-surface px-4 py-3.5">
           <p className="text-sm text-ink">{summary}</p>
+          <PhaseTag variant="read" />
         </div>
       )}
     </div>

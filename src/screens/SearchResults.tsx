@@ -22,6 +22,8 @@ export function SearchResults() {
   const [params, setParams] = useSearchParams()
   const query = params.get('q')?.trim() ?? ''
   const filterParam = params.get('filter')
+  const hasExplicitFilter =
+    filterParam === 'all' || filterParam === 'open-upcoming' || filterParam === 'recently-listed'
   const filter: LifecycleFilter =
     filterParam === 'open-upcoming' || filterParam === 'recently-listed' ? filterParam : 'all'
   const [input, setInput] = useState(query)
@@ -41,9 +43,8 @@ export function SearchResults() {
   }
 
   function setFilter(next: LifecycleFilter) {
-    const nextParams: Record<string, string> = {}
+    const nextParams: Record<string, string> = { filter: next }
     if (query) nextParams.q = query
-    if (next !== 'all') nextParams.filter = next
     setParams(nextParams)
   }
 
@@ -57,7 +58,7 @@ export function SearchResults() {
     navigate(`/ipo/${slug}`)
   }
 
-  const showResults = Boolean(query) || filter !== 'all'
+  const showResults = Boolean(query) || hasExplicitFilter
 
   const results = useMemo(() => {
     let base = ipoSummaries
@@ -87,7 +88,9 @@ export function SearchResults() {
         .map((entry) => entry.ipo)
     }
 
-    return base
+    // "All" is a browse category, not a literal union — already-listed IPOs live under
+    // "Recently listed" only, unless the user is searching by name/category/one-liner.
+    return query ? base : base.filter((ipo) => !isIpoListed(ipo))
   }, [query, filter])
 
   return (

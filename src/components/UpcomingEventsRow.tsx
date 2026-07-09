@@ -142,13 +142,21 @@ export function UpcomingEventsRow() {
           <>
             <div
               aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 left-0 w-12 backdrop-blur-md sm:w-20"
+              style={{
+                maskImage: 'linear-gradient(to right, black 45%, transparent)',
+                WebkitMaskImage: 'linear-gradient(to right, black 45%, transparent)',
+              }}
+            />
+            <div
+              aria-hidden="true"
               className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/55 to-transparent sm:w-20"
             />
             <button
               type="button"
               onClick={() => scrollByStep('left')}
               aria-label="Scroll earlier events"
-              className="absolute left-1 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 sm:flex"
+              className="absolute left-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 sm:left-4 sm:flex"
             >
               <ChevronLeftIcon width={16} height={16} />
             </button>
@@ -158,13 +166,21 @@ export function UpcomingEventsRow() {
           <>
             <div
               aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 right-0 w-12 backdrop-blur-md sm:w-20"
+              style={{
+                maskImage: 'linear-gradient(to left, black 45%, transparent)',
+                WebkitMaskImage: 'linear-gradient(to left, black 45%, transparent)',
+              }}
+            />
+            <div
+              aria-hidden="true"
               className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/55 to-transparent sm:w-20"
             />
             <button
               type="button"
               onClick={() => scrollByStep('right')}
               aria-label="Scroll later events"
-              className="absolute right-1 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 sm:flex"
+              className="absolute right-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-4 sm:flex"
             >
               <ChevronRightIcon width={16} height={16} />
             </button>
